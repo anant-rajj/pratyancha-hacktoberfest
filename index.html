@@ -3,129 +3,213 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VeriPack — Supply-Chain & Repository Integrity Checker</title>
+  <title>VeriPack — Software Supply-Chain & Codebase Integrity Engine</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- Top Navigation -->
-  <header>
-    <div class="nav-wrap">
-      <a href="#" class="logo-group">
-        <div class="logo-badge">✓</div>
-        <span class="logo-text">VeriPack</span>
-        <span class="logo-tag">Open Source Integrity Guard</span>
-      </a>
-      <a href="https://shell.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/anant-rajj/pratyancha-hacktoberfest" target="_blank" class="sample-btn" style="background: #e8f0fe; color: #1a73e8; border-color: #c2e7ff; font-weight: 700;">
-        ☁️ Run in Cloud Shell
-      </a>
-    </div>
-  </header>
-
-  <main>
-    <!-- Amazon-Style Simple Search Hero -->
-    <section class="search-section">
-      <div class="search-title">
-        <h1>Verify Any GitHub Repo or Published Package</h1>
-        <p>Check if a published registry package faithfully matches its public GitHub source code, or if stealth backdoors were injected during publication.</p>
+  <!-- Top Enterprise Header -->
+  <header class="top-nav">
+    <div class="nav-container">
+      <div class="brand">
+        <span class="brand-symbol">🛡️</span>
+        <div class="brand-text">
+          <span class="brand-title">VeriPack</span>
+          <span class="brand-subtitle">Software Supply-Chain Integrity Engine</span>
+        </div>
       </div>
-
-      <div class="search-bar-wrap">
-        <input 
-          type="text" 
-          id="repo-input" 
-          class="search-input" 
-          value="https://github.com/anant-rajj/pratyancha-hacktoberfest" 
-          placeholder="Paste GitHub repository URL or package name (e.g. https://github.com/owner/repo or express@4.21.2)"
-        >
-        <button class="btn-primary-check" onclick="runCheck()">
-          Verify Now
-        </button>
-      </div>
-
-      <!-- Quick 1-Click Samples -->
-      <div class="sample-links-bar">
-        <span class="sample-label">Try Examples:</span>
-        <button class="sample-btn" onclick="selectSample('pratyancha')">VeriPack (Official Repo)</button>
-        <button class="sample-btn" onclick="selectSample('clean_pkg')">Clean TypeScript (Case 1)</button>
-        <button class="sample-btn" onclick="selectSample('tampered_manifest')">Injected Postinstall (Case 2)</button>
-        <button class="sample-btn" onclick="selectSample('ghost_backdoor')">Ghost Backdoor (Case 3)</button>
-      </div>
-    </section>
-
-    <!-- Loading Animation -->
-    <section class="loading-box" id="loading-box">
-      <div class="spinner"></div>
-      <h3 style="font-size: 1.1rem; font-weight: 700;">Verifying Repository & Package Artifacts...</h3>
-      <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">Checking Git tags, build outputs, AST capabilities, and README specifications.</p>
-    </section>
-
-    <!-- Inspection Results Container -->
-    <div class="results-container" id="results-area">
-
-      <!-- 1. Big Visual Verdict Card -->
-      <section class="verdict-hero SAFE" id="verdict-banner">
-        <div class="verdict-left">
-          <div class="verdict-symbol" id="verdict-icon">✅</div>
-          <div>
-            <div class="verdict-headline" id="verdict-title">SAFE TO USE — 100% VERIFIED</div>
-            <div class="verdict-subtext" id="verdict-desc">All published files match public GitHub source code. Zero unauthorized capabilities.</div>
-          </div>
-        </div>
-        <div class="verdict-meta-chip" id="verdict-meta">
-          Score: 100/100 (Safe)
-        </div>
-      </section>
-
-      <!-- 2. Plain English Explanation: What is What -->
-      <section class="content-card">
-        <div class="card-title">
-          <span>📋</span>
-          <span>What is What (Summary & Findings)</span>
-        </div>
-        <div class="plain-explain-box" id="what-is-what-text">
-          Loading explanation...
-        </div>
-        
-        <!-- Files Overview Table -->
-        <div class="diff-table-grid" id="files-table"></div>
-      </section>
-
-      <!-- 3. Specification & README Alignment Checklist -->
-      <section class="content-card">
-        <div class="card-title">
-          <span>🔍</span>
-          <span>How It Matches the Specifications & README</span>
-        </div>
-        <div class="checklist-list" id="checklist-container">
-          <!-- Dynamically populated checklist -->
-        </div>
-      </section>
-
-      <!-- 4. Google Cloud Shell One-Click Runner -->
-      <section class="cloudshell-card">
-        <div class="cloudshell-left">
-          <div class="cloudshell-title">
-            <span>☁️</span>
-            <span>Run on Google Cloud Shell (Zero Local Setup)</span>
-          </div>
-          <p class="cloudshell-desc">
-            Want to test and verify this repository yourself without installing anything on your Mac or computer? Click below to launch a free, isolated Google Cloud Shell container. Log in with your Google ID and run the tests safely in the cloud.
-          </p>
+      <div class="nav-actions">
+        <div class="ai-status-indicator">
+          <span class="status-pulse"></span>
+          <span class="status-label">Qwen 2.5 Coder 7B (Local Ollama Online)</span>
         </div>
         <a 
           href="https://shell.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/anant-rajj/pratyancha-hacktoberfest" 
           target="_blank" 
-          class="btn-cloudshell"
-          id="btn-cloudshell-link"
+          class="btn-nav-cloudshell"
         >
-          <span>Open in Google Cloud Shell</span>
-          <span>→</span>
+          <span>Run in Cloud Shell</span>
+          <span class="arrow">↗</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+
+    <!-- Search & Verification Hero -->
+    <section class="hero-section">
+      <div class="hero-heading">
+        <h1>Repository & Package Integrity Verification</h1>
+        <p>Cross-examine published registry artifacts against upstream source code to mathematically and semantically detect unmapped backdoors, lifecycle script injections, and build discrepancies.</p>
+      </div>
+
+      <div class="search-container">
+        <div class="input-wrapper">
+          <span class="input-icon">🔍</span>
+          <input 
+            type="text" 
+            id="repo-input" 
+            class="repo-input" 
+            value="https://github.com/anant-rajj/pratyancha-hacktoberfest" 
+            placeholder="Enter public GitHub repository URL or package specifier (e.g., https://github.com/owner/repo or chalk@5.3.0)"
+          >
+          <button class="btn-verify" id="btn-run-verify" onclick="executeVerification()">
+            <span class="btn-text">Run Full Verification</span>
+            <span class="btn-arrow">→</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Verification Results Area -->
+    <div class="results-layout" id="results-layout">
+
+      <!-- 1. Safety Advisory & Installation Recommendation Card -->
+      <section class="card advisory-card" id="advisory-card">
+        <div class="advisory-header">
+          <div class="advisory-icon" id="advisory-icon">✓</div>
+          <div class="advisory-title-group">
+            <div class="advisory-badge" id="advisory-badge">SAFE TO INSTALL</div>
+            <h2 class="advisory-headline" id="advisory-headline">Repository Integrity Verified — Zero Malicious Discrepancies</h2>
+            <p class="advisory-description" id="advisory-description">
+              All published files correspond directly to verified public source code. No capability escalations, unauthorized network endpoints, or covert execution hooks detected.
+            </p>
+          </div>
+        </div>
+
+        <div class="advisory-decision-box" id="advisory-decision-box">
+          <div class="decision-meta">
+            <span class="meta-label">Integrity Verdict:</span>
+            <span class="meta-value" id="meta-verdict">Verified Clean (100% Provenance Match)</span>
+          </div>
+          <div class="decision-meta">
+            <span class="meta-label">Safety Recommendation:</span>
+            <span class="meta-value highlight" id="meta-recommendation">Safe for Production Deployment</span>
+          </div>
+          <div class="decision-actions" id="decision-actions">
+            <button class="btn-action primary" onclick="showDownloadModal()">Download Verified Tarball</button>
+            <button class="btn-action secondary" onclick="scrollToAudit()">View File-by-File Proof</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. Detailed File & Folder Audit Table (Exact Basis of Judgement) -->
+      <section class="card" id="file-audit-section">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">Detailed File & Folder Verification Log</h3>
+            <p class="card-subtitle">Every individual file and directory analyzed, with cryptographic hash checks, AST capability scans, and Shannon byte-entropy evaluation.</p>
+          </div>
+          <div class="filter-controls">
+            <button class="filter-btn active" onclick="filterAudit('all')">All Files (<span id="count-all">0</span>)</button>
+            <button class="filter-btn" onclick="filterAudit('exact')">Exact Matches (<span id="count-exact">0</span>)</button>
+            <button class="filter-btn" onclick="filterAudit('transformed')">Compiler Output (<span id="count-trans">0</span>)</button>
+            <button class="filter-btn" onclick="filterAudit('flagged')">Flagged / Delta (<span id="count-flagged">0</span>)</button>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="audit-table">
+            <thead>
+              <tr>
+                <th>File / Directory Path</th>
+                <th>Classification</th>
+                <th>Evaluation & Judgement Basis</th>
+                <th>Entropy</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="audit-table-body">
+              <!-- Dynamically populated rows -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 3. README.md Concordance & Spec Alignment Matrix -->
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">README.md & Specification Concordance Matrix</h3>
+            <p class="card-subtitle">Objective evaluation comparing claims made in README.md against actual source code files, dependencies, and entrypoints (Zero vanity metrics).</p>
+          </div>
+          <div class="concordance-score-pill" id="concordance-pill">
+            <span class="score-num" id="concordance-pct">100%</span>
+            <span class="score-desc">Fidelity Match</span>
+          </div>
+        </div>
+
+        <div class="concordance-grid" id="concordance-grid">
+          <!-- Dynamically populated checklist items -->
+        </div>
+      </section>
+
+      <!-- 4. Local Open-Source AI Explainer (Qwen 2.5 Coder 7B) -->
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">Local Open-Source AI Security Explainer</h3>
+            <p class="card-subtitle">Powered by local Qwen 2.5 Coder 7B running via Ollama. Analyzes semantic intent and explains why discrepancies exist.</p>
+          </div>
+          <button class="btn-refresh-ai" onclick="runLiveAIInference()">
+            <span>Re-Analyze with Qwen AI</span>
+            <span>⟳</span>
+          </button>
+        </div>
+
+        <div class="ai-console">
+          <div class="ai-console-header">
+            <span class="console-label">Inference Model: <strong>qwen2.5-coder:7b</strong></span>
+            <span class="console-latency" id="ai-latency-tag">Latency: 38ms (Deterministic / Ollama Native)</span>
+          </div>
+          <div class="ai-console-output" id="ai-output-stream">
+            Loading semantic analysis...
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. Google Cloud Shell Runner (Sandboxed Execution) -->
+      <section class="cloudshell-box">
+        <div class="cloudshell-content">
+          <div class="cloudshell-badge">Sandboxed Ephemeral Execution</div>
+          <h2 class="cloudshell-title">Run Verification in Google Cloud Shell</h2>
+          <p class="cloudshell-description">
+            Test and reproduce this integrity audit in a secure, sandboxed Google Cloud VM without installing Python packages or modifying your local system environment.
+          </p>
+          <div class="cloudshell-command-box">
+            <code>git clone https://github.com/anant-rajj/pratyancha-hacktoberfest.git && cd pratyancha-hacktoberfest && pytest -v tests/</code>
+          </div>
+        </div>
+        <a 
+          href="https://shell.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/anant-rajj/pratyancha-hacktoberfest" 
+          target="_blank" 
+          class="btn-cloudshell-main"
+          id="btn-cloudshell-main"
+        >
+          <span>Launch Google Cloud Shell</span>
+          <span class="arrow">→</span>
         </a>
       </section>
 
     </div>
+
   </main>
+
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-left">
+        <span>VeriPack Open-Source Integrity Engine</span>
+        <span class="separator">•</span>
+        <span>Hacktoberfest 2026 Problem 04</span>
+      </div>
+      <div class="footer-right">
+        <span>Open-Weight AI: Qwen 2.5 Coder 7B</span>
+        <span class="separator">•</span>
+        <span>Zero Closed APIs</span>
+      </div>
+    </div>
+  </footer>
 
   <script src="app.js"></script>
 </body>
