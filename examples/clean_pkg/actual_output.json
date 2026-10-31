@@ -1,0 +1,47 @@
+{
+  "package_name": "clean_pkg",
+  "version": "1.0.0",
+  "ecosystem": "npm",
+  "source_ref": "upstream",
+  "archive_sha256": "8e422a10490c0cb3a0b7bb41c091ce8f31ab18d04abf7213b00cc1a998eabd3f",
+  "provenance_verified": false,
+  "summary_counts": {
+    "identical": 2,
+    "expected_artifacts": 1,
+    "stripped_dev_files": 1,
+    "suspicious": 0,
+    "critical": 0
+  },
+  "verdict": "SAFE",
+  "model_used": "deterministic-static-fallback",
+  "findings": [
+    {
+      "file_path": "dist/index.js",
+      "classification": "EXPECTED_BUILD_ARTIFACT",
+      "severity": "INFO",
+      "verdict": "SAFE",
+      "entropy": null,
+      "evidence": [
+        "Maps to upstream stem: src/index.ts",
+        "0 new sensitive capabilities introduced"
+      ],
+      "diff_snippet": "",
+      "explanation": "Compiled output 'dist/index.js' faithfully maps to 'src/index.ts' with no capability escalation.",
+      "archetype": "CASE_1_EXPECTED_BUILD",
+      "file": "dist/index.js",
+      "status": "EXPECTED_BUILD_ARTIFACT",
+      "category": "EXPECTED_BUILD_ARTIFACT"
+    }
+  ],
+  "summary": {
+    "suspicious_findings": 0,
+    "expected_build_artifacts": 1,
+    "identical_files": 2,
+    "identical": 2,
+    "expected_artifacts": 1,
+    "stripped_dev_files": 1,
+    "suspicious": 0,
+    "critical": 0
+  },
+  "risk_score": 0
+}
