@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pratyancha / VeriPack — Supply-Chain Integrity &amp; Provenance Protocol</title>
+  <title>Pratyancha / VeriPack — Retro CRT Supply-Chain Workstation</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body data-theme="green" data-scanlines="true" data-power="on" data-brightness="normal">
@@ -17,12 +17,12 @@
         <span class="live-led"></span>
         <span class="tb-title">PRATYANCHA / VERIPACK</span>
         <span class="tb-sep">/</span>
-        <span class="tb-sub">PROVENANCE PROTOCOL (PROBLEM 04)</span>
+        <span class="tb-sub">PROBLEM 04 WORKSTATION</span>
       </div>
 
       <div class="tb-actions">
         <button class="tb-btn active" id="btn-desk" onclick="focusScreen()">✓ DESK VIEW</button>
-        <button class="tb-btn" onclick="triggerHelp()">↗ SPEC DOCS</button>
+        <button class="tb-btn" onclick="triggerHelp()">↗ RUBRIC</button>
         <button class="tb-btn active" id="tb-power" onclick="togglePower()">• TERMINAL ON</button>
         <button class="tb-btn" id="btn-bright" onclick="cycleBrightness()">BRIGHTNESS NORMAL</button>
         <button class="tb-btn active" id="btn-theme-label" onclick="cyclePhosphor()">GREEN</button>
@@ -72,78 +72,105 @@
 
               <!-- CRT Top Status Bar -->
               <div class="crt-sys-bar">
-                <span class="sys-id">PRATYANCHA-OS v2.6.4 // PROVENANCE-KERNEL</span>
-                <span class="sys-path">SECURE_CHANNEL</span>
-                <span class="sys-clock" id="live-clock">05:00:00</span>
+                <span class="sys-id">PRATYANCHA-84 // SECURE-KERNEL</span>
+                <span class="sys-path">CH-04://AUDIT</span>
+                <span class="sys-clock" id="live-clock">05:08:00</span>
               </div>
 
-              <!-- Inside TV Content Area -->
+              <!-- Inside TV Content Area (Eye-Catching, Bold Boxes, Low Text) -->
               <div class="tv-content">
 
-                <!-- Official Enterprise Title Block (Clean, Sharp & Formal) -->
-                <div class="official-brand-header">
-                  <div class="brand-badge-box">
-                    <span class="brand-shield">🛡️</span>
-                    <div class="brand-titles">
-                      <div class="brand-main-title">PRATYANCHA <span class="brand-divider">/</span> VERIPACK</div>
-                      <div class="brand-protocol-sub">AUTOMATED SUPPLY-CHAIN INTEGRITY &amp; SOURCE PROVENANCE PROTOCOL</div>
+                <!-- 1. Eye-Catching Bold Brand Header -->
+                <div class="retro-hero-box">
+                  <div class="hero-brand-line">
+                    <span class="brand-shield-glow">🛡️</span>
+                    <div class="hero-titles">
+                      <h1 class="hero-title">PRATYANCHA <span class="neon-slash">/</span> VERIPACK</h1>
+                      <div class="hero-subtitle">SUPPLY-CHAIN INTEGRITY &amp; SOURCE PROVENANCE SYSTEM</div>
                     </div>
                   </div>
-                  <div class="brand-meta-pill">HACKTOBERFEST 2026 • PROBLEM 04 COMPLIANCE SUITE • 26/26 TESTS VERIFIED</div>
+                  <div class="hero-badge-tag">PROBLEM 04 • HACKTOBERFEST 2026 • 28/28 UNIT TESTS VERIFIED</div>
                 </div>
 
-                <div class="formal-intro-box">
-                  <p class="formal-desc">
-                    <strong>System Objective:</strong> Cryptographic and syntactic cross-examination between published registry packages (npm / PyPI tarballs) and public upstream Git repositories. Verifies compiler transformations, flags unauthorized lifecycle scripts, detects unmapped stealth ghost files, and enforces zero capability escalation via AST parsing and Shannon byte entropy heuristics.
-                  </p>
-                </div>
-
-                <!-- Verification Target Input Bar -->
-                <div class="verification-input-card">
-                  <div class="input-label-row">
-                    <span class="input-field-label">TARGET REPOSITORY OR REGISTRY PACKAGE SPECIFICATION:</span>
-                    <span class="input-mode-tag">Zip-Slip &amp; Tar-Slip Guard Active</span>
+                <!-- 2. Eye-Catching Stat Metric HUD (Big Bold Numbers) -->
+                <div class="stat-hud-grid">
+                  <div class="stat-card" id="hud-score-card">
+                    <div class="stat-val text-green" id="hud-score">100/100</div>
+                    <div class="stat-lbl">SECURITY SCORE</div>
                   </div>
-                  <div class="input-form-row">
-                    <span class="input-prefix">&gt;</span>
+                  <div class="stat-card">
+                    <div class="stat-val text-green" id="hud-tests">28/28</div>
+                    <div class="stat-lbl">TESTS PASSED</div>
+                  </div>
+                  <div class="stat-card" id="hud-threat-card">
+                    <div class="stat-val text-green" id="hud-threats">0 THREATS</div>
+                    <div class="stat-lbl">BACKDOORS DETECTED</div>
+                  </div>
+                  <div class="stat-card" id="hud-grade-card">
+                    <div class="stat-val text-green" id="hud-grade">GRADE A+</div>
+                    <div class="stat-lbl">PRODUCTION CLEARANCE</div>
+                  </div>
+                </div>
+
+                <!-- 3. Bold Input & Verify Action Box -->
+                <div class="terminal-action-box">
+                  <div class="tab-label-row">
+                    <span class="tab-main-label">&gt; TARGET REPOSITORY / REGISTRY PACKAGE:</span>
+                    <span class="tab-guard-tag">🛡️ Zip-Slip Guard: ACTIVE</span>
+                  </div>
+                  <div class="tab-input-row">
+                    <span class="prompt-arrow">&gt;&gt;</span>
                     <input 
                       type="text" 
                       id="target-input" 
-                      class="target-input" 
+                      class="tab-input" 
                       value="https://github.com/anant-rajj/pratyancha-hacktoberfest"
-                      placeholder="Enter GitHub URL or package@version (e.g. https://github.com/owner/repo or express@4.21.2)"
+                      placeholder="Paste GitHub URL or package@version (e.g. express@4.21.2)"
                     >
-                    <button class="btn-run-verify" id="btn-verify" onclick="runCheck()">
+                    <button class="btn-verify-chunky" id="btn-verify" onclick="runCheck()">
                       <span>VERIFY PACKAGE</span>
                       <span class="btn-arrow">→</span>
                     </button>
                   </div>
 
-                  <!-- Clean Evaluation Archetype Selectors -->
-                  <div class="archetype-bar">
-                    <span class="archetype-label">Select Test Evaluation Archetype:</span>
-                    <div class="archetype-chips">
-                      <button class="arch-chip active" id="chip-pratyancha" onclick="selectSample('pratyancha')">
-                        <span class="arch-dot">●</span> Official Pratyancha Repository (100% Compliant)
-                      </button>
-                      <button class="arch-chip" id="chip-clean_pkg" onclick="selectSample('clean_pkg')">
-                        <span class="arch-dot">●</span> Case 1: Clean TypeScript Build (Safe Transform)
-                      </button>
-                      <button class="arch-chip" id="chip-tampered_manifest" onclick="selectSample('tampered_manifest')">
-                        <span class="arch-dot">●</span> Case 2: Injected Lifecycle Hook (Tampered)
-                      </button>
-                      <button class="arch-chip" id="chip-ghost_backdoor" onclick="selectSample('ghost_backdoor')">
-                        <span class="arch-dot">●</span> Case 3: Obfuscated Ghost Backdoor (Compromised)
-                      </button>
-                    </div>
+                  <!-- 4 Chunky Archetype Action Tiles -->
+                  <div class="archetype-tiles-row">
+                    <button class="arch-tile active" id="chip-pratyancha" onclick="selectSample('pratyancha')">
+                      <span class="arch-status-dot"></span>
+                      <div class="arch-tile-text">
+                        <span class="arch-name">Official Pratyancha Repo</span>
+                        <span class="arch-desc">100% Spec Compliant (Safe)</span>
+                      </div>
+                    </button>
+                    <button class="arch-tile" id="chip-clean_pkg" onclick="selectSample('clean_pkg')">
+                      <span class="arch-status-dot"></span>
+                      <div class="arch-tile-text">
+                        <span class="arch-name">Case 1: TypeScript Build</span>
+                        <span class="arch-desc">Safe Compiler Transform</span>
+                      </div>
+                    </button>
+                    <button class="arch-tile" id="chip-tampered_manifest" onclick="selectSample('tampered_manifest')">
+                      <span class="arch-status-dot warn"></span>
+                      <div class="arch-tile-text">
+                        <span class="arch-name">Case 2: Injected Manifest</span>
+                        <span class="arch-desc">Unauthorized Postinstall</span>
+                      </div>
+                    </button>
+                    <button class="arch-tile" id="chip-ghost_backdoor" onclick="selectSample('ghost_backdoor')">
+                      <span class="arch-status-dot danger"></span>
+                      <div class="arch-tile-text">
+                        <span class="arch-name">Case 3: Ghost Backdoor</span>
+                        <span class="arch-desc">Unmapped Stealth Payload</span>
+                      </div>
+                    </button>
                   </div>
                 </div>
 
-                <!-- Animated 6-Step Verification Pipeline -->
+                <!-- 4. Animated 6-Step Pipeline (Visible during audit) -->
                 <section class="progress-card" id="progress-card">
                   <div class="progress-header">
-                    <h3 class="pipeline-title">&gt; EXECUTING 6-TIER PROVENANCE VERIFICATION PIPELINE...</h3>
-                    <span class="pipeline-badge">Path.relative_to Bounds: ENFORCED</span>
+                    <h3 class="pipeline-title">&gt; EXECUTING 6-TIER PROVENANCE PIPELINE...</h3>
+                    <span class="pipeline-badge">Path.relative_to: ENFORCED</span>
                   </div>
                   <div class="progress-steps-row">
                     <div class="step-card" id="step-1">
@@ -177,134 +204,117 @@
                 <div class="results-container" id="results-area">
 
                   <!-- ========================================================
-                       SECTION 1: Detailed File-Level Provenance Verification
+                       SECTION 1: Detailed File Inspection (Bold Chunky Cards)
                        ======================================================== -->
-                  <section class="content-card" id="sec-files">
-                    <div class="card-title-bar">
-                      <div class="card-title">
-                        <span>📋</span>
-                        <span>SECTION 1: DETAILED FILE-LEVEL PROVENANCE &amp; ANOMALY VERIFICATION</span>
+                  <section class="classic-box" id="sec-files">
+                    <div class="box-header-bar">
+                      <div class="box-title">
+                        <span class="box-icon">📋</span>
+                        <span>SECTION 1: FILE-BY-FILE PROVENANCE &amp; DISCREPANCY AUDIT</span>
                       </div>
-                      <span class="card-tag">Granular Cryptographic Audit</span>
-                    </div>
-                    
-                    <div class="section-explanation-box">
-                      <div class="spec-lead">
-                        <strong>Verification Methodology:</strong> Every file present in the published tarball is cross-examined against the upstream Git tree using three independent metrics:
-                      </div>
-                      <ul class="methodology-list">
-                        <li><strong>SHA-256 Cryptographic Checksum:</strong> Verifies exact byte-for-byte matches for identical source files.</li>
-                        <li><strong>AST Syntactic Capability Extraction:</strong> For transformed files (e.g. <code>src/index.ts</code> &rarr; <code>dist/index.js</code>), verifies that zero unauthorized runtime capabilities (<code>child_process.exec</code>, <code>eval</code>, <code>net.Socket</code>) were injected.</li>
-                        <li><strong>Shannon Byte Entropy Heuristic:</strong> Tests file information density on an 8.0-bit scale; flags any unmapped file with entropy &gt; 5.0 bits as an obfuscated or packed payload.</li>
-                      </ul>
+                      <span class="box-meta-tag" id="files-count-badge">5 Files Audited</span>
                     </div>
 
-                    <!-- Granular File Verification Table -->
-                    <div class="file-verification-matrix">
-                      <div class="matrix-header-row">
-                        <span class="col-file">File Path &amp; Discrepancy</span>
-                        <span class="col-origin">Origin / Mapping</span>
-                        <span class="col-technical">Technical Proof &amp; Entropy</span>
-                        <span class="col-status">Verification Status</span>
-                      </div>
-                      <div class="file-grid" id="files-table">
-                        <!-- Populated dynamically -->
-                      </div>
-                    </div>
-                  </section>
-
-                  <!-- ========================================================
-                       SECTION 2: Specification & README Concordance Matrix
-                       ======================================================== -->
-                  <section class="content-card" id="sec-spec">
-                    <div class="card-title-bar">
-                      <div class="card-title">
-                        <span>🔍</span>
-                        <span>SECTION 2: SPECIFICATION &amp; README CONCORDANCE MATRIX (PASS / FAIL AUDIT)</span>
-                      </div>
-                      <span class="card-tag safe">100% Green Verification</span>
+                    <!-- Clean 3-Tier Methodology Callout (Short & Punchy) -->
+                    <div class="methodology-pills-row">
+                      <span class="meth-pill"><strong>SHA-256:</strong> Byte Checksums</span>
+                      <span class="meth-pill"><strong>AST SCAN:</strong> Zero Capability Escalation</span>
+                      <span class="meth-pill"><strong>ENTROPY:</strong> &lt; 5.0b Obfuscation Ceiling</span>
                     </div>
 
-                    <div class="section-explanation-box">
-                      <p class="matrix-intro">
-                        Automated compliance checks verifying that the package, author metadata, repository structure, and build processes faithfully satisfy the Problem 04 specification rubric:
-                      </p>
-                    </div>
-
-                    <div class="checklist-grid" id="checklist-container">
+                    <!-- File Cards Grid -->
+                    <div class="file-cards-grid" id="files-table">
                       <!-- Populated dynamically -->
                     </div>
                   </section>
 
                   <!-- ========================================================
-                       SECTION 3: Final Security Verdict & Production Clearance
+                       SECTION 2: Specification Concordance Grid (Bold Pass/Fail)
                        ======================================================== -->
-                  <section class="content-card" id="sec-verdict-summary">
-                    <div class="card-title-bar">
-                      <div class="card-title">
-                        <span>⚖️</span>
-                        <span>SECTION 3: FINAL SECURITY VERDICT &amp; PRODUCTION CLEARANCE</span>
+                  <section class="classic-box" id="sec-spec">
+                    <div class="box-header-bar">
+                      <div class="box-title">
+                        <span class="box-icon">🔍</span>
+                        <span>SECTION 2: SPECIFICATION &amp; README CONCORDANCE MATRIX</span>
                       </div>
-                      <span class="card-tag" id="verdict-grade-tag">Grade: A+ Verified</span>
+                      <span class="box-meta-tag safe" id="checks-score-badge">7/7 Passed</span>
                     </div>
 
-                    <!-- Big Prominent Clearance Hero Banner -->
+                    <!-- 2-Column Bold Checklist Grid -->
+                    <div class="checks-grid" id="checklist-container">
+                      <!-- Populated dynamically -->
+                    </div>
+                  </section>
+
+                  <!-- ========================================================
+                       SECTION 3: Giant Production Clearance Hero & AI Breakdown
+                       ======================================================== -->
+                  <section class="classic-box" id="sec-verdict-summary">
+                    <div class="box-header-bar">
+                      <div class="box-title">
+                        <span class="box-icon">⚖️</span>
+                        <span>SECTION 3: FINAL SECURITY VERDICT &amp; CLEARANCE</span>
+                      </div>
+                      <span class="box-meta-tag" id="verdict-grade-tag">Grade: A+ Verified</span>
+                    </div>
+
+                    <!-- Giant Bold Clearance Banner -->
                     <div class="verdict-hero SAFE" id="verdict-banner">
                       <div class="verdict-left">
                         <div class="verdict-symbol" id="verdict-icon">✅</div>
                         <div class="verdict-text-block">
-                          <div class="verdict-headline" id="verdict-title">APPROVED FOR PRODUCTION DEPLOYMENT</div>
+                          <div class="verdict-headline" id="verdict-title">APPROVED FOR PRODUCTION</div>
                           <div class="verdict-subtext" id="verdict-desc">
-                            Is it safe to download and use? <strong>YES.</strong> All tarball contents match public Git source code. Zero unauthorized capabilities or backdoor scripts detected.
+                            IS IT SAFE TO DOWNLOAD &amp; INSTALL? <strong>YES, 100% SECURE.</strong> All published files match public Git source code. Zero unauthorized capabilities or backdoor scripts detected.
                           </div>
                         </div>
                       </div>
                       <div class="verdict-badge-box" id="verdict-meta">
-                        Security Score: 100/100 (Safe)
+                        Score: 100/100 (Safe)
                       </div>
                     </div>
 
-                    <!-- Comprehensive Plain-English AI Explanation (Qwen 2.5 Coder 7B) -->
-                    <div class="ai-verdict-container">
+                    <!-- AI Comprehensive Explanation (Qwen 2.5 Coder 7B) -->
+                    <div class="ai-box-wrap">
                       <div class="ai-box-header">
-                        <div class="ai-box-title">
-                          <span>⚡</span>
-                          <span>Qwen 2.5 Coder 7B Comprehensive Security Explanation (Plain English)</span>
+                        <div class="ai-title-row">
+                          <span class="ai-bolt">⚡</span>
+                          <span class="ai-title-text">LOCAL AI SECURITY EXPLANATION (QWEN 2.5 CODER 7B)</span>
                         </div>
-                        <button class="btn-ping-ai" onclick="pingLiveAI()">▶ Run Live Qwen Inference</button>
+                        <button class="btn-ping-ai" onclick="pingLiveAI()">▶ RUN LIVE INFERENCE</button>
                       </div>
 
                       <div class="ai-meta-bar">
-                        <span class="ai-endpoint">Local Inference Daemon: http://localhost:11434/api/generate (Apple Silicon)</span>
+                        <span class="ai-daemon">Ollama Daemon: http://localhost:11434/api/generate</span>
                         <span id="ai-latency-badge" class="ai-latency">Latency: 42ms • Model: qwen2.5-coder:7b</span>
                       </div>
 
                       <div class="live-ai-output" id="live-ai-response">
-                        [Qwen 2.5 Coder 7B]: Initializing discrepancy explanation...
+                        [Qwen 2.5 Coder 7B]: Initializing discrepancy analysis...
                       </div>
                     </div>
                   </section>
 
                   <!-- ========================================================
-                       SECTION 4: Google Cloud Shell Isolated Container
+                       SECTION 4: Google Cloud Shell Container
                        ======================================================== -->
-                  <section class="cloudshell-card" id="sec-cloudshell">
-                    <div class="cloudshell-text">
-                      <div class="cloudshell-headline">
+                  <section class="cloudshell-box" id="sec-cloudshell">
+                    <div class="cloudshell-content">
+                      <div class="cloudshell-heading">
                         <span>☁️</span>
-                        <span>SECTION 4: RUN ON GOOGLE CLOUD SHELL (ZERO LOCAL SETUP)</span>
+                        <span>RUN ON GOOGLE CLOUD SHELL (ZERO LOCAL SETUP)</span>
                       </div>
-                      <p class="cloudshell-info">
-                        Want to test, inspect, and verify this repository yourself without installing anything on your Mac or local machine? Click below to launch a free, isolated Google Cloud Shell container. Sign in with your Google account to run the full pytest test suite safely in the cloud.
+                      <p class="cloudshell-sub">
+                        Launch an isolated Google Cloud Shell container to inspect and run all 28 pytest unit tests safely in the cloud with zero local setup.
                       </p>
                     </div>
                     <a 
                       href="https://shell.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/anant-rajj/pratyancha-hacktoberfest" 
                       target="_blank" 
-                      class="btn-cloudshell-cta"
+                      class="btn-cloudshell-chunky"
                       id="btn-cloudshell-link"
                     >
-                      <span>Open in Google Cloud Shell</span>
+                      <span>OPEN IN GOOGLE CLOUD SHELL</span>
                       <span>→</span>
                     </a>
                   </section>
@@ -351,9 +361,9 @@
 
     <!-- Bottom Scene Status Bar (Glucas Footer) -->
     <footer class="scene-bottom">
-      <button class="footer-btn" onclick="triggerAuditNote()">READ SPECIFICATION NOTE</button>
+      <button class="footer-btn" onclick="triggerAuditNote()">READ SPEC NOTE</button>
       <div class="footer-center">
-        SCROLL TV SCREEN TO EXPLORE • OLLAMA LOCAL AI ONLINE • 26 TESTS PASSING • HACKTOBERFEST 2026
+        SCROLL TV SCREEN TO EXPLORE • OLLAMA LOCAL AI ONLINE • 28 TESTS PASSING • HACKTOBERFEST 2026
       </div>
       <a href="https://github.com/anant-rajj/pratyancha-hacktoberfest" target="_blank" class="footer-btn">GITHUB REPO ↗</a>
     </footer>
