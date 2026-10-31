@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VeriPack — Supply-Chain Integrity & Evidence Explorer</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header>
+    <div class="nav-container">
+      <a href="#" class="brand">
+        <div class="brand-icon">V</div>
+        <div class="brand-text">VeriPack</div>
+        <span class="brand-badge">v1.0.0</span>
+      </a>
+      <ul class="nav-links">
+        <li><span class="nav-link active">Scanner</span></li>
+        <li><span class="nav-link" onclick="selectPreset('clean_pkg')">Case 1 (Safe)</span></li>
+        <li><span class="nav-link" onclick="selectPreset('tampered_manifest')">Case 2 (Tampered)</span></li>
+        <li><span class="nav-link" onclick="selectPreset('ghost_backdoor')">Case 3 (Ghost File)</span></li>
+      </ul>
+      <div class="engine-pill">
+        <div class="pulse-dot"></div>
+        <span>Local Ollama: qwen2.5-coder:7b</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Screen 1: Scan & Archetype Selector -->
+    <section class="scan-card">
+      <div class="scan-header">
+        <div class="scan-title">
+          <h1>Published Package vs Source Code Integrity Analyzer</h1>
+          <p>Verify whether npm/PyPI registry artifacts faithfully mirror public Git repositories or harbor covert supply-chain injections.</p>
+        </div>
+        <div class="ecosystem-toggle">
+          <button class="eco-btn active" id="eco-npm" onclick="document.getElementById('eco-npm').classList.add('active'); document.getElementById('eco-pypi').classList.remove('active');">npm</button>
+          <button class="eco-btn" id="eco-pypi" onclick="document.getElementById('eco-pypi').classList.add('active'); document.getElementById('eco-npm').classList.remove('active');">PyPI</button>
+        </div>
+      </div>
+
+      <div class="input-group-row">
+        <div class="input-wrapper">
+          <input type="text" id="package-input" class="input-box" value="ghost_backdoor@1.0.0" placeholder="e.g. express@4.21.2 or requests==2.32.3">
+        </div>
+        <button class="btn-primary" onclick="startScan()">
+          <span>Verify Release</span>
+          <span>→</span>
+        </button>
+      </div>
+
+      <!-- Quick 1-Click Evaluation Archetypes -->
+      <div class="presets-bar">
+        <span class="presets-label">Evaluation Archetypes:</span>
+        <button class="preset-chip" onclick="selectPreset('clean_pkg')">
+          <span class="preset-dot dot-safe"></span>
+          <span>Case 1: Clean Build (TypeScript Transpiler)</span>
+        </button>
+        <button class="preset-chip" onclick="selectPreset('tampered_manifest')">
+          <span class="preset-dot dot-tampered"></span>
+          <span>Case 2: Manifest Tampering (Injected postinstall)</span>
+        </button>
+        <button class="preset-chip" onclick="selectPreset('ghost_backdoor')">
+          <span class="preset-dot dot-compromised"></span>
+          <span>Case 3: Ghost Backdoor (lib/x.min.js with eval)</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Screen 3: Scan Progress Pipeline (Animated) -->
+    <section class="progress-card" id="progress-card">
+      <div class="progress-header">
+        <h3 style="font-size: 0.95rem; font-weight: 600;">Verifying Package Integrity...</h3>
+        <span style="font-size: 0.8rem; color: var(--text-secondary); font-family: var(--font-mono);">Zip-Slip Protection: ACTIVE</span>
+      </div>
+      <div class="progress-steps">
+        <div class="step-item" id="step-1">
+          <span class="step-status"><div class="step-spinner"></div></span>
+          <span>1. Extract Archive</span>
+        </div>
+        <div class="step-item" id="step-2">
+          <span class="step-status"><div class="step-spinner"></div></span>
+          <span>2. Verify SHA-256</span>
+        </div>
+        <div class="step-item" id="step-3">
+          <span class="step-status"><div class="step-spinner"></div></span>
+          <span>3. Resolve Git Tag</span>
+        </div>
+        <div class="step-item" id="step-4">
+          <span class="step-status"><div class="step-spinner"></div></span>
+          <span>4. Diff Manifests</span>
+        </div>
+        <div class="step-item" id="step-5">
+          <span class="step-status"><div class="step-spinner"></div></span>
+          <span>5. AST Capabilities</span>
+        </div>
+        <div class="step-item" id="step-6">
+          <span class="step-status"><div class="step-spinner"></div></span>
+          <span>6. Qwen AI Triage</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Screen 4: Executive Result & Coverage -->
+    <section class="result-card" id="result-card" style="display: none;">
+      <div class="verdict-banner">
+        <div class="verdict-left">
+          <span class="verdict-tag" id="verdict-tag">COMPROMISED</span>
+          <div>
+            <div class="verdict-summary" id="verdict-summary">Loading summary...</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.2rem;">Evidence-based classification grounded in byte entropy and AST markers.</div>
+          </div>
+        </div>
+        <div class="score-box">
+          <span style="color: var(--text-muted); font-size: 0.75rem;">RISK SCORE:</span>
+          <span id="score-value" style="font-weight: 700; color: var(--accent-red);">100/100</span>
+        </div>
+      </div>
+
+      <!-- Coverage Strip -->
+      <div class="coverage-strip" id="coverage-strip"></div>
+
+      <!-- Metadata Grid -->
+      <div class="meta-grid">
+        <div class="meta-item">
+          <span class="meta-label">Package & Version</span>
+          <span class="meta-val" id="meta-pkg">-</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Archive SHA-256</span>
+          <span class="meta-val" id="meta-sha">-</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Upstream Git Ref</span>
+          <span class="meta-val" id="meta-source">-</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">AI Explanation Engine</span>
+          <span class="meta-val" id="meta-model">-</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Screen 5: Three-Pane Evidence & Diff Explorer -->
+    <section class="explorer-container" id="explorer-card" style="display: none;">
+      <!-- Left: File Tree -->
+      <div class="explorer-pane">
+        <div class="pane-header">
+          <span>Archive Inventory</span>
+          <span style="font-size: 0.7rem; color: var(--accent-cyan);">Files</span>
+        </div>
+        <div class="pane-content" id="file-list"></div>
+      </div>
+
+      <!-- Middle: Diff Viewer -->
+      <div class="explorer-pane">
+        <div class="pane-header">
+          <span>Source vs Published Diff</span>
+          <span style="font-size: 0.7rem; color: var(--text-muted);">Unified Diff</span>
+        </div>
+        <div class="pane-content" style="padding: 0.5rem;">
+          <pre class="diff-code" id="diff-viewer"></pre>
+        </div>
+      </div>
+
+      <!-- Right: Finding Breakdown & Qwen Explainer -->
+      <div class="explorer-pane">
+        <div class="pane-header">
+          <span>Finding Analysis</span>
+          <span style="font-size: 0.7rem; color: var(--accent-cyan);">Evidence</span>
+        </div>
+        <div class="pane-content">
+          <div class="finding-card">
+            <div class="finding-title">
+              <span style="font-weight: 700; font-family: var(--font-mono); font-size: 0.85rem;" id="finding-file">-</span>
+              <span class="finding-severity" id="finding-sev">CRITICAL</span>
+            </div>
+            <div style="font-size: 0.75rem; color: var(--text-secondary); display: flex; justify-content: space-between;">
+              <span>Shannon Entropy: <strong id="finding-entropy" style="color: var(--text-primary);">-</strong></span>
+              <span>Mapped: <strong id="finding-mapping" style="color: var(--text-primary);">-</strong></span>
+            </div>
+
+            <div style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-top: 0.25rem;">Grounded Evidence:</div>
+            <ul class="evidence-list" id="finding-evidence"></ul>
+
+            <!-- Local AI Explainer Box -->
+            <div class="qwen-box">
+              <div class="qwen-header">
+                <span>⚡ Qwen 2.5 Coder 7B Explanation</span>
+              </div>
+              <div class="qwen-text" id="qwen-explanation">-</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Screen 7: Action & Export Bar -->
+    <div class="action-bar">
+      <button class="btn-secondary" onclick="copyJsonReport()">Copy JSON Report</button>
+      <button class="btn-secondary" onclick="downloadAdvisory()">Download Markdown Advisory</button>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
