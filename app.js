@@ -549,6 +549,26 @@ function showDownloadModal() {
   alert("VeriPack Verification Complete: SHA-256 integrity digest and Git provenance attested.");
 }
 
+function toggleInfoPopover() {
+  const popover = document.getElementById("info-popover");
+  if (popover.style.display === "none" || popover.style.display === "") {
+    popover.style.display = "block";
+  } else {
+    popover.style.display = "none";
+  }
+}
+
+// Close popover if user clicks outside
+document.addEventListener("click", (e) => {
+  const popover = document.getElementById("info-popover");
+  const btn = document.getElementById("btn-info");
+  if (popover && popover.style.display === "block") {
+    if (!popover.contains(e.target) && e.target !== btn) {
+      popover.style.display = "none";
+    }
+  }
+});
+
 // Initialize on page load
 window.onload = () => {
   renderDashboard();

@@ -65,7 +65,83 @@
     <!-- Verification Results Area -->
     <div class="results-layout" id="results-layout">
 
-      <!-- 1. Safety Advisory & Installation Recommendation Card -->
+      <!-- 1. Detailed File & Folder Audit Table (Exact Basis of Judgement) -->
+      <section class="card" id="file-audit-section">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">Detailed File & Folder Verification Log</h3>
+            <p class="card-subtitle">Every individual file and directory analyzed, with cryptographic hash checks, AST capability scans, and Shannon byte-entropy evaluation.</p>
+          </div>
+          <div class="filter-controls-wrap">
+            <div class="filter-controls">
+              <button class="filter-btn active" onclick="filterAudit('all')">All Files (<span id="count-all">0</span>)</button>
+              <button class="filter-btn" onclick="filterAudit('exact')">Exact Matches (<span id="count-exact">0</span>)</button>
+              <button class="filter-btn" onclick="filterAudit('transformed')">Compiler Output (<span id="count-trans">0</span>)</button>
+              <button class="filter-btn" onclick="filterAudit('flagged')">Flagged / Delta (<span id="count-flagged">0</span>)</button>
+              <button class="btn-info-pop" id="btn-info" onclick="toggleInfoPopover()" title="Click for classification guide">ℹ</button>
+            </div>
+
+            <!-- "I" Button Info Popover (Explains what is what) -->
+            <div class="info-popover" id="info-popover" style="display: none;">
+              <div class="info-popover-header">
+                <span>Classification Definition Guide</span>
+                <button class="close-info" onclick="toggleInfoPopover()">✕</button>
+              </div>
+              <div class="info-popover-body">
+                <div class="info-item">
+                  <span class="status-tag clean">Exact Matches</span>
+                  <p>Files in the published package that match the public Git repository byte-for-byte with identical SHA-256 digests.</p>
+                </div>
+                <div class="info-item">
+                  <span class="status-tag transform">Compiler Output</span>
+                  <p>Legitimate compiler or bundler transformations (such as TypeScript <code>src/</code> compiled to <code>dist/</code>) verified to preserve exported function signatures and introduce 0 sensitive system capabilities.</p>
+                </div>
+                <div class="info-item">
+                  <span class="status-tag tampered">Flagged / Delta</span>
+                  <p>Discrepancies requiring security attention: unauthorized lifecycle hooks (<code>preinstall</code> / <code>postinstall</code>) or unmapped ghost files exhibiting elevated Shannon entropy.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="audit-table">
+            <thead>
+              <tr>
+                <th>File / Directory Path</th>
+                <th>Classification</th>
+                <th>Evaluation & Judgement Basis</th>
+                <th>Entropy</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="audit-table-body">
+              <!-- Dynamically populated rows -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 2. README.md Concordance & Spec Alignment Matrix -->
+      <section class="card" id="readme-concordance-section">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">README.md & Specification Concordance Matrix</h3>
+            <p class="card-subtitle">Objective evaluation comparing claims made in README.md against actual source code files, dependencies, and entrypoints (Zero vanity metrics).</p>
+          </div>
+          <div class="concordance-score-pill" id="concordance-pill">
+            <span class="score-num" id="concordance-pct">100%</span>
+            <span class="score-desc">Fidelity Match</span>
+          </div>
+        </div>
+
+        <div class="concordance-grid" id="concordance-grid">
+          <!-- Dynamically populated checklist items -->
+        </div>
+      </section>
+
+      <!-- 3. Safety Advisory & Installation Recommendation Card (Positioned UNDER Detailed Verification & README Comparison) -->
       <section class="card advisory-card" id="advisory-card">
         <div class="advisory-header">
           <div class="advisory-icon" id="advisory-icon">✓</div>
@@ -91,57 +167,6 @@
             <button class="btn-action primary" onclick="showDownloadModal()">Download Verified Tarball</button>
             <button class="btn-action secondary" onclick="scrollToAudit()">View File-by-File Proof</button>
           </div>
-        </div>
-      </section>
-
-      <!-- 2. Detailed File & Folder Audit Table (Exact Basis of Judgement) -->
-      <section class="card" id="file-audit-section">
-        <div class="card-header">
-          <div>
-            <h3 class="card-title">Detailed File & Folder Verification Log</h3>
-            <p class="card-subtitle">Every individual file and directory analyzed, with cryptographic hash checks, AST capability scans, and Shannon byte-entropy evaluation.</p>
-          </div>
-          <div class="filter-controls">
-            <button class="filter-btn active" onclick="filterAudit('all')">All Files (<span id="count-all">0</span>)</button>
-            <button class="filter-btn" onclick="filterAudit('exact')">Exact Matches (<span id="count-exact">0</span>)</button>
-            <button class="filter-btn" onclick="filterAudit('transformed')">Compiler Output (<span id="count-trans">0</span>)</button>
-            <button class="filter-btn" onclick="filterAudit('flagged')">Flagged / Delta (<span id="count-flagged">0</span>)</button>
-          </div>
-        </div>
-
-        <div class="table-container">
-          <table class="audit-table">
-            <thead>
-              <tr>
-                <th>File / Directory Path</th>
-                <th>Classification</th>
-                <th>Evaluation & Judgement Basis</th>
-                <th>Entropy</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody id="audit-table-body">
-              <!-- Dynamically populated rows -->
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- 3. README.md Concordance & Spec Alignment Matrix -->
-      <section class="card">
-        <div class="card-header">
-          <div>
-            <h3 class="card-title">README.md & Specification Concordance Matrix</h3>
-            <p class="card-subtitle">Objective evaluation comparing claims made in README.md against actual source code files, dependencies, and entrypoints (Zero vanity metrics).</p>
-          </div>
-          <div class="concordance-score-pill" id="concordance-pill">
-            <span class="score-num" id="concordance-pct">100%</span>
-            <span class="score-desc">Fidelity Match</span>
-          </div>
-        </div>
-
-        <div class="concordance-grid" id="concordance-grid">
-          <!-- Dynamically populated checklist items -->
         </div>
       </section>
 
