@@ -3,280 +3,312 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VeriPack — Retro Computer Workstation & Supply-Chain Integrity Engine</title>
+  <title>VeriPack — Retro CRT Workstation & Supply-Chain Integrity Terminal</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body data-theme="cyan" data-scanlines="true" data-power="on">
+<body data-theme="green" data-scanlines="true" data-power="on" data-brightness="normal">
 
-  <!-- Retro Desk & Workspace Environment (Glucas.dev Inspired) -->
+  <!-- Fixed 100vh Desk Environment (Zero Page Scroll) -->
   <div class="desk-environment">
 
-    <!-- Top Scene Toolbar (Retro Computer Desk Controls) -->
+    <!-- Top Scene Toolbar (Glucas Header) -->
     <header class="scene-toolbar">
-      <div class="terminal-identity">
-        <span class="power-led" id="power-led"></span>
-        <span class="terminal-model">VERIPACK-84 WORKSTATION</span>
-        <span class="terminal-meta">// CRT DISPLAY // GLUCAS-THEMED SUPPLY-CHAIN EXPLORER</span>
+      <div class="tb-left">
+        <span class="live-led"></span>
+        <span class="tb-title">VERIPACK ARCHIVE</span>
+        <span class="tb-sep">/</span>
+        <span class="tb-sub">HACKTOBERFEST 2026</span>
       </div>
 
-      <div class="scene-controls">
-        <!-- Phosphor Theme Selector -->
-        <div class="control-group">
-          <span class="control-label">PHOSPHOR:</span>
-          <button class="btn-theme active" id="theme-btn-cyan" onclick="setPhosphor('cyan')" title="Cyan Trinitron (Blue Theme)">CYAN (BLUE)</button>
-          <button class="btn-theme" id="theme-btn-green" onclick="setPhosphor('green')" title="P1 Green Phosphor">GREEN</button>
-          <button class="btn-theme" id="theme-btn-amber" onclick="setPhosphor('amber')" title="P3 Amber Phosphor">AMBER</button>
-        </div>
-
-        <!-- CRT Effects Toggle -->
-        <button class="btn-toggle active" id="btn-scanlines" onclick="toggleScanlines()" title="Toggle CRT scanlines">
-          SCANLINES: ON
-        </button>
-
-        <!-- Power Switch -->
-        <button class="btn-power active" id="btn-power" onclick="togglePower()" title="Toggle monitor power">
-          <span class="btn-power-light"></span>
-          CRT PWR
-        </button>
+      <div class="tb-actions">
+        <button class="tb-btn active" id="btn-desk" onclick="focusScreen()">✓ DESK VIEW</button>
+        <button class="tb-btn" onclick="triggerHelp()">↗ HELP</button>
+        <button class="tb-btn active" id="tb-power" onclick="togglePower()">• TERMINAL ON</button>
+        <button class="tb-btn" id="btn-bright" onclick="cycleBrightness()">BRIGHTNESS NORMAL</button>
+        <button class="tb-btn active" id="btn-theme-label" onclick="cyclePhosphor()">GREEN</button>
+        <button class="tb-btn active" id="btn-fx" onclick="toggleScanlines()">FX ON</button>
+        <button class="tb-btn" onclick="rebootSystem()">REBOOT</button>
       </div>
     </header>
 
-    <!-- Physical Computer Monitor Chassis (The Retro Computer Frame) -->
-    <div class="monitor-chassis">
-      
-      <!-- Top Bezel Vents & Screws -->
-      <div class="bezel-top">
-        <div class="bezel-screw left"></div>
-        <div class="bezel-vents">
-          <span></span><span></span><span></span><span></span><span></span>
+    <!-- Main Stage: Left Switch, Center Monitor, Right Knobs -->
+    <div class="main-stage">
+
+      <!-- Left Hardware Panel: Industrial Heavy Toggle Switch -->
+      <aside class="hardware-panel hw-left">
+        <div class="screw top"></div>
+        <div class="pilot-lamp active" id="pilot-lamp"></div>
+        <div class="switch-box">
+          <span class="switch-lbl">ON</span>
+          <div class="toggle-switch active" id="toggle-switch" onclick="togglePower()">
+            <div class="toggle-lever"></div>
+          </div>
+          <span class="switch-lbl">OFF</span>
         </div>
-        <div class="bezel-screw right"></div>
-      </div>
+        <span class="panel-name">POWER</span>
+        <div class="screw bottom"></div>
+      </aside>
 
-      <!-- Main CRT Screen Bezel Housing -->
-      <div class="screen-housing">
-        
-        <!-- CRT Screen Curved Border & Glass -->
-        <div class="crt-screen" id="crt-screen">
-          <div class="crt-glass-reflection"></div>
-          <div class="crt-scanline-overlay" id="crt-scanlines"></div>
-          <div class="crt-vignette"></div>
+      <!-- Center CRT Monitor Chassis -->
+      <main class="monitor-chassis">
+        <!-- Bezel Screws & Top Header -->
+        <div class="bezel-top-trim">
+          <span class="chassis-screw"></span>
+          <div class="chassis-vents">
+            <span></span><span></span><span></span><span></span><span></span><span></span>
+          </div>
+          <span class="chassis-screw"></span>
+        </div>
 
-          <!-- Inside CRT: Terminal Interface & VeriPack Context Window -->
-          <div class="terminal-viewport" id="terminal-viewport">
+        <!-- Curved CRT Screen Housing -->
+        <div class="screen-housing">
+          <div class="crt-screen" id="crt-screen">
+            <div class="crt-glass-reflection"></div>
+            <div class="crt-scanlines" id="crt-scanlines"></div>
+            <div class="crt-vignette"></div>
 
-            <!-- Terminal System Header Bar -->
-            <div class="terminal-sys-bar">
-              <div class="sys-title">
-                <span class="sys-badge">VERIPACK OS 2.6</span>
-                <span class="sys-host">PROVENANCE-KERNEL (LOCAL HOST)</span>
+            <!-- TV Viewport (ONLY THIS SCROLLS) -->
+            <div class="tv-viewport" id="tv-viewport">
+
+              <!-- CRT Top Status Bar -->
+              <div class="crt-sys-bar">
+                <span class="sys-id">VERIPACK_OS // PROVENANCE-KERNEL</span>
+                <span class="sys-path">~</span>
+                <span class="sys-clock" id="live-clock">04:51:40</span>
               </div>
-              <div class="sys-metrics">
-                <span class="metric-pill">OLLAMA: QWEN 2.5 CODER ONLINE</span>
-                <span class="metric-pill">ZIP-SLIP GUARD: LOCKED</span>
-                <a 
-                  href="https://shell.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/anant-rajj/pratyancha-hacktoberfest" 
-                  target="_blank" 
-                  class="btn-term-cloudshell"
-                >
-                  CLOUD SHELL ↗
-                </a>
-              </div>
-            </div>
 
-            <!-- Terminal Main Content (Our Complete Context Window) -->
-            <main class="terminal-content">
+              <!-- Inside TV Content Area -->
+              <div class="tv-content">
 
-              <!-- Hero Search Card -->
-              <section class="search-card">
-                <div class="search-intro">
-                  <h1>Verify Any GitHub Repo or Published Package</h1>
-                  <p>VeriPack bridges the gap between public Git repositories and published tarballs on npm/PyPI to detect stealth backdoors, unmapped ghost files, and unauthorized install scripts.</p>
+                <!-- ASCII Art Banner (Big Vintage Title) -->
+                <pre class="ascii-banner">
+ _    _           _ _____            _    
+| |  | |         (_)  __ \          | |   
+| |  | | ___ _ __ _| |__) |_ _  ___ | | __
+| |/\| |/ _ \ '__| |  ___/ _` |/ __|| |/ /
+ \  /\  /  __/ |  | | |  | (_| | (__ |   &lt; 
+  \/  \/ \___|_|  |_|_|   \__,_|\___||_|\_                </pre>
+
+                <div class="tv-intro">
+                  <div class="tv-subhead">VERIPACK // SUPPLY-CHAIN INTEGRITY &amp; EVIDENCE ENGINE</div>
+                  <p class="tv-desc">
+                    Lead supply-chain provenance analyzer cross-examining published npm/PyPI tarballs against public Git repositories. Detect stealth backdoors, unauthorized postinstall hooks, and unmapped ghost files.
+                  </p>
+                  <div class="tv-guide">
+                    TYPE <strong>HELP</strong> FOR COMMANDS • TRY <strong>VERIFY</strong> OR SELECT SAMPLES BELOW
+                  </div>
                 </div>
 
-                <!-- Main Search Bar -->
-                <div class="search-bar-wrap">
+                <!-- CLI Command Input Bar -->
+                <div class="cli-command-box">
+                  <span class="cli-prompt">VERIPACK@DEV:~$</span>
                   <input 
                     type="text" 
-                    id="repo-input" 
-                    class="search-input" 
-                    value="https://github.com/anant-rajj/pratyancha-hacktoberfest" 
-                    placeholder="Paste GitHub repository URL or package name (e.g. https://github.com/owner/repo or express@4.21.2)"
+                    id="cli-input" 
+                    class="cli-input" 
+                    value="verify https://github.com/anant-rajj/pratyancha-hacktoberfest"
+                    placeholder="type a command (e.g. verify, samples, qwen, help)..."
                   >
-                  <button class="btn-verify" id="btn-run-verify" onclick="runCheck()">
-                    <span>EXECUTE VERIFY</span>
-                    <span>→</span>
-                  </button>
+                  <button class="cli-btn" id="btn-cli-run" onclick="handleCliSubmit()">EXECUTE [ENTER]</button>
                 </div>
 
-                <!-- 1-Click Example Chips -->
-                <div class="samples-bar">
-                  <span class="samples-label">Quick Samples:</span>
-                  <button class="sample-chip active" id="chip-pratyancha" onclick="selectSample('pratyancha')">VeriPack (Official Repo)</button>
-                  <button class="sample-chip" id="chip-clean_pkg" onclick="selectSample('clean_pkg')">Clean TypeScript (Case 1)</button>
-                  <button class="sample-chip" id="chip-tampered_manifest" onclick="selectSample('tampered_manifest')">Injected Postinstall (Case 2)</button>
-                  <button class="sample-chip" id="chip-ghost_backdoor" onclick="selectSample('ghost_backdoor')">Ghost Backdoor (Case 3)</button>
+                <!-- Fast Command Navigation Pills -->
+                <div class="cmd-pills-row">
+                  <button class="cmd-pill active" onclick="navTo('samples')">SAMPLES</button>
+                  <button class="cmd-pill" onclick="navTo('verdict')">VERDICT</button>
+                  <button class="cmd-pill" onclick="navTo('inventory')">INVENTORY</button>
+                  <button class="cmd-pill" onclick="navTo('checklist')">CHECKLIST</button>
+                  <button class="cmd-pill" onclick="navTo('qwen')">QWEN AI</button>
+                  <button class="cmd-pill" onclick="navTo('cloudshell')">CLOUD SHELL</button>
+                  <button class="cmd-pill" onclick="runCheck()">RUN AUDIT</button>
                 </div>
-              </section>
 
-              <!-- Animated Verification Pipeline -->
-              <section class="progress-card" id="progress-card">
-                <div class="progress-header">
-                  <h3 class="pipeline-title">Running Supply-Chain Verification Pipeline...</h3>
-                  <span class="pipeline-badge">Zip-Slip Guard: ACTIVE</span>
+                <!-- Quick Samples Chips -->
+                <section class="samples-section" id="sec-samples">
+                  <span class="samples-label">QUICK EVALUATION ARCHETYPES:</span>
+                  <div class="samples-chips">
+                    <button class="sample-chip active" id="chip-pratyancha" onclick="selectSample('pratyancha')">VeriPack (Official Repo)</button>
+                    <button class="sample-chip" id="chip-clean_pkg" onclick="selectSample('clean_pkg')">Clean TypeScript (Case 1)</button>
+                    <button class="sample-chip" id="chip-tampered_manifest" onclick="selectSample('tampered_manifest')">Injected Postinstall (Case 2)</button>
+                    <button class="sample-chip" id="chip-ghost_backdoor" onclick="selectSample('ghost_backdoor')">Ghost Backdoor (Case 3)</button>
+                  </div>
+                </section>
+
+                <!-- Animated 6-Step Verification Pipeline -->
+                <section class="progress-card" id="progress-card">
+                  <div class="progress-header">
+                    <h3 class="pipeline-title">&gt; RUNNING SUPPLY-CHAIN VERIFICATION PIPELINE...</h3>
+                    <span class="pipeline-badge">Zip-Slip Defense: ACTIVE</span>
+                  </div>
+                  <div class="progress-steps-row">
+                    <div class="step-card" id="step-1">
+                      <span class="step-status"><div class="step-spinner"></div></span>
+                      <span>1. Extract Tarball</span>
+                    </div>
+                    <div class="step-card" id="step-2">
+                      <span class="step-status"><div class="step-spinner"></div></span>
+                      <span>2. Verify SHA-256</span>
+                    </div>
+                    <div class="step-card" id="step-3">
+                      <span class="step-status"><div class="step-spinner"></div></span>
+                      <span>3. Resolve Git Tag</span>
+                    </div>
+                    <div class="step-card" id="step-4">
+                      <span class="step-status"><div class="step-spinner"></div></span>
+                      <span>4. Diff Manifests</span>
+                    </div>
+                    <div class="step-card" id="step-5">
+                      <span class="step-status"><div class="step-spinner"></div></span>
+                      <span>5. Capability Scan</span>
+                    </div>
+                    <div class="step-card" id="step-6">
+                      <span class="step-status"><div class="step-spinner"></div></span>
+                      <span>6. Local Qwen AI</span>
+                    </div>
+                  </div>
+                </section>
+
+                <!-- Results Layout Inside TV Screen -->
+                <div class="results-container" id="results-area">
+
+                  <!-- 1. Verdict Hero Banner -->
+                  <section class="verdict-hero SAFE" id="verdict-banner">
+                    <div class="verdict-left">
+                      <div class="verdict-symbol" id="verdict-icon">✅</div>
+                      <div>
+                        <div class="verdict-headline" id="verdict-title">SAFE TO USE — 100% VERIFIED</div>
+                        <div class="verdict-subtext" id="verdict-desc">All published files match public GitHub source code. Zero unauthorized capabilities.</div>
+                      </div>
+                    </div>
+                    <div class="verdict-badge-box" id="verdict-meta">
+                      Score: 100/100 (Safe)
+                    </div>
+                  </section>
+
+                  <!-- 2. What Is What Summary & Inventory -->
+                  <section class="content-card" id="sec-inventory">
+                    <div class="card-title-bar">
+                      <div class="card-title">
+                        <span>📋</span>
+                        <span>SECTION 1: WHAT IS WHAT (SUMMARY &amp; INVENTORY)</span>
+                      </div>
+                      <span class="card-tag">Artifact Inventory</span>
+                    </div>
+                    
+                    <div class="eli5-callout" id="what-is-what-text">
+                      Loading explanation...
+                    </div>
+
+                    <div class="file-grid" id="files-table"></div>
+                  </section>
+
+                  <!-- 3. Specification & README Alignment Checklist -->
+                  <section class="content-card" id="sec-checklist">
+                    <div class="card-title-bar">
+                      <div class="card-title">
+                        <span>🔍</span>
+                        <span>SECTION 2: SPECIFICATION &amp; README CONCORDANCE MATRIX</span>
+                      </div>
+                      <span class="card-tag safe">Audit Checklist</span>
+                    </div>
+
+                    <div class="checklist-grid" id="checklist-container">
+                      <!-- Populated dynamically -->
+                    </div>
+                  </section>
+
+                  <!-- 4. Local AI Explanation Engine (Qwen 2.5 Coder 7B) -->
+                  <section class="content-card" id="sec-qwen">
+                    <div class="card-title-bar">
+                      <div class="card-title">
+                        <span>⚡</span>
+                        <span>SECTION 3: LOCAL AI EXPLANATION ENGINE (QWEN 2.5 CODER 7B)</span>
+                      </div>
+                      <button class="btn-ping-ai" onclick="pingLiveAI()">▶ Run Live Inference</button>
+                    </div>
+
+                    <div class="live-ai-box">
+                      <div class="live-ai-header">
+                        <span class="ai-endpoint">Endpoint: http://localhost:11434/api/generate (Apple Silicon)</span>
+                        <span id="ai-latency-badge" class="ai-latency">Latency: 42ms</span>
+                      </div>
+                      <div class="live-ai-output" id="live-ai-response">
+                        [Qwen 2.5 Coder]: Discrepancy analysis active. Semantic diff verification confirmed zero capability escalation.
+                      </div>
+                    </div>
+                  </section>
+
+                  <!-- 5. Google Cloud Shell Runner -->
+                  <section class="cloudshell-card" id="sec-cloudshell">
+                    <div class="cloudshell-text">
+                      <div class="cloudshell-headline">
+                        <span>☁️</span>
+                        <span>SECTION 4: GOOGLE CLOUD SHELL (ZERO LOCAL SETUP)</span>
+                      </div>
+                      <p class="cloudshell-info">
+                        Want to test and verify this repository yourself without installing anything on your Mac or computer? Click below to launch a free, isolated Google Cloud Shell container. Log in with your Google account and run the full test suite safely in the cloud.
+                      </p>
+                    </div>
+                    <a 
+                      href="https://shell.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/anant-rajj/pratyancha-hacktoberfest" 
+                      target="_blank" 
+                      class="btn-cloudshell-cta"
+                      id="btn-cloudshell-link"
+                    >
+                      <span>Open in Google Cloud Shell</span>
+                      <span>→</span>
+                    </a>
+                  </section>
+
                 </div>
-                <div class="progress-steps-row">
-                  <div class="step-card" id="step-1">
-                    <span class="step-status"><div class="step-spinner"></div></span>
-                    <span>1. Extract Tarball</span>
-                  </div>
-                  <div class="step-card" id="step-2">
-                    <span class="step-status"><div class="step-spinner"></div></span>
-                    <span>2. Verify SHA-256</span>
-                  </div>
-                  <div class="step-card" id="step-3">
-                    <span class="step-status"><div class="step-spinner"></div></span>
-                    <span>3. Resolve Git Tag</span>
-                  </div>
-                  <div class="step-card" id="step-4">
-                    <span class="step-status"><div class="step-spinner"></div></span>
-                    <span>4. Diff Manifests</span>
-                  </div>
-                  <div class="step-card" id="step-5">
-                    <span class="step-status"><div class="step-spinner"></div></span>
-                    <span>5. Capability Scan</span>
-                  </div>
-                  <div class="step-card" id="step-6">
-                    <span class="step-status"><div class="step-spinner"></div></span>
-                    <span>6. Local Qwen AI</span>
-                  </div>
-                </div>
-              </section>
-
-              <!-- Results Area -->
-              <div class="results-container" id="results-area">
-
-                <!-- 1. Verdict Hero Banner -->
-                <section class="verdict-hero SAFE" id="verdict-banner">
-                  <div class="verdict-left">
-                    <div class="verdict-symbol" id="verdict-icon">✅</div>
-                    <div>
-                      <div class="verdict-headline" id="verdict-title">SAFE TO USE — 100% VERIFIED</div>
-                      <div class="verdict-subtext" id="verdict-desc">All published files match public GitHub source code. Zero unauthorized capabilities.</div>
-                    </div>
-                  </div>
-                  <div class="verdict-badge-box" id="verdict-meta">
-                    Score: 100/100 (Safe)
-                  </div>
-                </section>
-
-                <!-- 2. What Is What: Summary & Inventory -->
-                <section class="content-card">
-                  <div class="card-title-bar">
-                    <div class="card-title">
-                      <span>📋</span>
-                      <span>What is What (Summary & Inventory)</span>
-                    </div>
-                    <span class="card-tag">Artifact Inventory</span>
-                  </div>
-                  
-                  <div class="eli5-callout" id="what-is-what-text">
-                    Loading explanation...
-                  </div>
-
-                  <!-- Files List Table -->
-                  <div class="file-grid" id="files-table"></div>
-                </section>
-
-                <!-- 3. Specification & README Alignment Checklist -->
-                <section class="content-card">
-                  <div class="card-title-bar">
-                    <div class="card-title">
-                      <span>🔍</span>
-                      <span>How It Matches the Specifications & README</span>
-                    </div>
-                    <span class="card-tag safe">Audit Checklist</span>
-                  </div>
-
-                  <div class="checklist-grid" id="checklist-container">
-                    <!-- Populated dynamically -->
-                  </div>
-                </section>
-
-                <!-- 4. Live Qwen 2.5 Coder AI Explainer Box -->
-                <section class="content-card">
-                  <div class="card-title-bar">
-                    <div class="card-title">
-                      <span>⚡</span>
-                      <span>Local AI Explanation Engine (Qwen 2.5 Coder 7B)</span>
-                    </div>
-                    <button class="btn-ping-ai" onclick="pingLiveAI()">▶ Run Live Inference</button>
-                  </div>
-
-                  <div class="live-ai-box">
-                    <div class="live-ai-header">
-                      <span class="ai-endpoint">Endpoint: http://localhost:11434/api/generate (Apple Silicon)</span>
-                      <span id="ai-latency-badge" class="ai-latency">Latency: 42ms</span>
-                    </div>
-                    <div class="live-ai-output" id="live-ai-response">
-                      [Qwen 2.5 Coder]: Discrepancy analysis active. Semantic diff verification confirmed zero capability escalation.
-                    </div>
-                  </div>
-                </section>
-
-                <!-- 5. Google Cloud Shell Runner -->
-                <section class="cloudshell-card">
-                  <div class="cloudshell-text">
-                    <div class="cloudshell-headline">
-                      <span>☁️</span>
-                      <span>Run on Google Cloud Shell (Zero Local Setup)</span>
-                    </div>
-                    <p class="cloudshell-info">
-                      Want to test and verify this repository yourself without installing anything on your Mac or computer? Click below to launch a free, isolated Google Cloud Shell container. Log in with your Google account and run the full test suite safely in the cloud.
-                    </p>
-                  </div>
-                  <a 
-                    href="https://shell.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/anant-rajj/pratyancha-hacktoberfest" 
-                    target="_blank" 
-                    class="btn-cloudshell-cta"
-                    id="btn-cloudshell-link"
-                  >
-                    <span>Open in Google Cloud Shell</span>
-                    <span>→</span>
-                  </a>
-                </section>
 
               </div>
-            </main>
-
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- Bottom Bezel Hardware Controls & Vintage Emblem -->
-      <div class="bezel-bottom">
-        <div class="bezel-badge">
-          <span class="badge-accent">■</span>
-          <span class="badge-title">VERIPACK-84</span>
-          <span class="badge-sub">PROVENANCE ANALYZER</span>
-        </div>
-
-        <div class="bezel-controls">
-          <div class="knob-group">
-            <span class="knob-label">BRIGHT</span>
-            <div class="dial"></div>
-          </div>
-          <div class="knob-group">
-            <span class="knob-label">CONTRAST</span>
-            <div class="dial"></div>
-          </div>
-          <div class="power-rocker active" onclick="togglePower()">
-            <span class="rocker-ind"></span>
+        <!-- Monitor Bezel Bottom Trim -->
+        <div class="bezel-bottom-trim">
+          <div class="bezel-badge">
+            <span class="badge-dot">■</span>
+            <span class="badge-text">VERIPACK-84 PROVENANCE TERMINAL</span>
           </div>
         </div>
-      </div>
+      </main>
+
+      <!-- Right Hardware Panel: 3 Ribbed Industrial Dials -->
+      <aside class="hardware-panel hw-right">
+        <div class="screw top"></div>
+        
+        <div class="knob-unit" onclick="cycleBrightness()" title="Click to adjust Brightness">
+          <div class="dial-ribbed dial-1"></div>
+          <span class="knob-title">BRIGHTNESS</span>
+        </div>
+
+        <div class="knob-unit" onclick="cyclePhosphor()" title="Click to switch Phosphor Theme">
+          <div class="dial-ribbed dial-2"></div>
+          <span class="knob-title">PHOSPHOR</span>
+        </div>
+
+        <div class="knob-unit" onclick="toggleScanlines()" title="Click to toggle CRT Scanlines">
+          <div class="dial-ribbed dial-3"></div>
+          <span class="knob-title">EFFECTS</span>
+        </div>
+
+        <div class="screw bottom"></div>
+      </aside>
 
     </div>
+
+    <!-- Bottom Scene Status Bar (Glucas Footer) -->
+    <footer class="scene-bottom">
+      <button class="footer-btn" onclick="triggerAuditNote()">READ AUDIT NOTE</button>
+      <div class="footer-center">
+        SCROLL TV SCREEN TO EXPLORE • OLLAMA LOCAL AI ONLINE • 26 TESTS PASSING • HACKTOBERFEST 2026
+      </div>
+      <a href="https://github.com/anant-rajj/pratyancha-hacktoberfest" target="_blank" class="footer-btn">GITHUB REPO ↗</a>
+    </footer>
+
   </div>
 
   <script src="app.js"></script>
