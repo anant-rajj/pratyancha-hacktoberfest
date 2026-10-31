@@ -160,8 +160,9 @@ def test_case_3_ghost_obfuscated_file_compromised(tmp_path: Path):
     assert ghost_finding.entropy > 5.0
 
 
-def test_deterministic_llm_fallback():
+def test_deterministic_llm_fallback(monkeypatch):
     """Verify deterministic explanation fallback generates clear security reasons when Ollama is offline."""
+    monkeypatch.setenv("VERIPACK_OLLAMA_URL", "http://127.0.0.1:1/offline")
     explanation = generate_deterministic_explanation(
         file_path="package.json",
         classification="SUSPICIOUS_MANIFEST",

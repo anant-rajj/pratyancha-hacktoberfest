@@ -3,208 +3,213 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VeriPack — Supply-Chain Integrity & Evidence Explorer</title>
+  <title>VeriPack — Software Supply-Chain & Codebase Integrity Engine</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- Navigation Bar -->
-  <header>
+  <!-- Top Enterprise Header -->
+  <header class="top-nav">
     <div class="nav-container">
-      <a href="#" class="brand">
-        <div class="brand-icon">V</div>
-        <div class="brand-text">VeriPack</div>
-        <span class="brand-badge">v1.0.0</span>
-      </a>
-      <ul class="nav-links">
-        <li><span class="nav-link active">Scanner</span></li>
-        <li><span class="nav-link" onclick="selectPreset('clean_pkg')">Case 1 (Safe)</span></li>
-        <li><span class="nav-link" onclick="selectPreset('tampered_manifest')">Case 2 (Tampered)</span></li>
-        <li><span class="nav-link" onclick="selectPreset('ghost_backdoor')">Case 3 (Ghost File)</span></li>
-      </ul>
-      <div class="engine-pill">
-        <div class="pulse-dot"></div>
-        <span>Local Ollama: qwen2.5-coder:7b</span>
+      <div class="brand">
+        <span class="brand-symbol">🛡️</span>
+        <div class="brand-text">
+          <span class="brand-title">VeriPack</span>
+          <span class="brand-subtitle">Software Supply-Chain Integrity Engine</span>
+        </div>
+      </div>
+      <div class="nav-actions">
+        <div class="ai-status-indicator">
+          <span class="status-pulse"></span>
+          <span class="status-label">Qwen 2.5 Coder 7B (Local Ollama Online)</span>
+        </div>
+        <a 
+          href="https://shell.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/anant-rajj/pratyancha-hacktoberfest" 
+          target="_blank" 
+          class="btn-nav-cloudshell"
+        >
+          <span>Run in Cloud Shell</span>
+          <span class="arrow">↗</span>
+        </a>
       </div>
     </div>
   </header>
 
-  <main>
-    <!-- Screen 1: Scan & Archetype Selector -->
-    <section class="scan-card">
-      <div class="scan-header">
-        <div class="scan-title">
-          <h1>Published Package vs Source Code Integrity Analyzer</h1>
-          <p>Verify whether npm/PyPI registry artifacts faithfully mirror public Git repositories or harbor covert supply-chain injections.</p>
-        </div>
-        <div class="ecosystem-toggle">
-          <button class="eco-btn active" id="eco-npm" onclick="document.getElementById('eco-npm').classList.add('active'); document.getElementById('eco-pypi').classList.remove('active');">npm</button>
-          <button class="eco-btn" id="eco-pypi" onclick="document.getElementById('eco-pypi').classList.add('active'); document.getElementById('eco-npm').classList.remove('active');">PyPI</button>
-        </div>
+  <main class="main-content">
+
+    <!-- Search & Verification Hero -->
+    <section class="hero-section">
+      <div class="hero-heading">
+        <h1>Repository & Package Integrity Verification</h1>
+        <p>Cross-examine published registry artifacts against upstream source code to mathematically and semantically detect unmapped backdoors, lifecycle script injections, and build discrepancies.</p>
       </div>
 
-      <div class="input-group-row">
+      <div class="search-container">
         <div class="input-wrapper">
-          <input type="text" id="package-input" class="input-box" value="ghost_backdoor@1.0.0" placeholder="e.g. express@4.21.2 or requests==2.32.3">
-        </div>
-        <button class="btn-primary" onclick="startScan()">
-          <span>Verify Release</span>
-          <span>→</span>
-        </button>
-      </div>
-
-      <!-- Quick 1-Click Evaluation Archetypes -->
-      <div class="presets-bar">
-        <span class="presets-label">Evaluation Archetypes:</span>
-        <button class="preset-chip" onclick="selectPreset('clean_pkg')">
-          <span class="preset-dot dot-safe"></span>
-          <span>Case 1: Clean Build (TypeScript Transpiler)</span>
-        </button>
-        <button class="preset-chip" onclick="selectPreset('tampered_manifest')">
-          <span class="preset-dot dot-tampered"></span>
-          <span>Case 2: Manifest Tampering (Injected postinstall)</span>
-        </button>
-        <button class="preset-chip" onclick="selectPreset('ghost_backdoor')">
-          <span class="preset-dot dot-compromised"></span>
-          <span>Case 3: Ghost Backdoor (lib/x.min.js with eval)</span>
-        </button>
-      </div>
-    </section>
-
-    <!-- Screen 3: Scan Progress Pipeline (Animated) -->
-    <section class="progress-card" id="progress-card">
-      <div class="progress-header">
-        <h3 style="font-size: 0.95rem; font-weight: 600;">Verifying Package Integrity...</h3>
-        <span style="font-size: 0.8rem; color: var(--text-secondary); font-family: var(--font-mono);">Zip-Slip Protection: ACTIVE</span>
-      </div>
-      <div class="progress-steps">
-        <div class="step-item" id="step-1">
-          <span class="step-status"><div class="step-spinner"></div></span>
-          <span>1. Extract Archive</span>
-        </div>
-        <div class="step-item" id="step-2">
-          <span class="step-status"><div class="step-spinner"></div></span>
-          <span>2. Verify SHA-256</span>
-        </div>
-        <div class="step-item" id="step-3">
-          <span class="step-status"><div class="step-spinner"></div></span>
-          <span>3. Resolve Git Tag</span>
-        </div>
-        <div class="step-item" id="step-4">
-          <span class="step-status"><div class="step-spinner"></div></span>
-          <span>4. Diff Manifests</span>
-        </div>
-        <div class="step-item" id="step-5">
-          <span class="step-status"><div class="step-spinner"></div></span>
-          <span>5. AST Capabilities</span>
-        </div>
-        <div class="step-item" id="step-6">
-          <span class="step-status"><div class="step-spinner"></div></span>
-          <span>6. Qwen AI Triage</span>
+          <span class="input-icon">🔍</span>
+          <input 
+            type="text" 
+            id="repo-input" 
+            class="repo-input" 
+            value="https://github.com/anant-rajj/pratyancha-hacktoberfest" 
+            placeholder="Enter public GitHub repository URL or package specifier (e.g., https://github.com/owner/repo or chalk@5.3.0)"
+          >
+          <button class="btn-verify" id="btn-run-verify" onclick="executeVerification()">
+            <span class="btn-text">Run Full Verification</span>
+            <span class="btn-arrow">→</span>
+          </button>
         </div>
       </div>
     </section>
 
-    <!-- Screen 4: Executive Result & Coverage -->
-    <section class="result-card" id="result-card" style="display: none;">
-      <div class="verdict-banner">
-        <div class="verdict-left">
-          <span class="verdict-tag" id="verdict-tag">COMPROMISED</span>
+    <!-- Verification Results Area -->
+    <div class="results-layout" id="results-layout">
+
+      <!-- 1. Safety Advisory & Installation Recommendation Card -->
+      <section class="card advisory-card" id="advisory-card">
+        <div class="advisory-header">
+          <div class="advisory-icon" id="advisory-icon">✓</div>
+          <div class="advisory-title-group">
+            <div class="advisory-badge" id="advisory-badge">SAFE TO INSTALL</div>
+            <h2 class="advisory-headline" id="advisory-headline">Repository Integrity Verified — Zero Malicious Discrepancies</h2>
+            <p class="advisory-description" id="advisory-description">
+              All published files correspond directly to verified public source code. No capability escalations, unauthorized network endpoints, or covert execution hooks detected.
+            </p>
+          </div>
+        </div>
+
+        <div class="advisory-decision-box" id="advisory-decision-box">
+          <div class="decision-meta">
+            <span class="meta-label">Integrity Verdict:</span>
+            <span class="meta-value" id="meta-verdict">Verified Clean (100% Provenance Match)</span>
+          </div>
+          <div class="decision-meta">
+            <span class="meta-label">Safety Recommendation:</span>
+            <span class="meta-value highlight" id="meta-recommendation">Safe for Production Deployment</span>
+          </div>
+          <div class="decision-actions" id="decision-actions">
+            <button class="btn-action primary" onclick="showDownloadModal()">Download Verified Tarball</button>
+            <button class="btn-action secondary" onclick="scrollToAudit()">View File-by-File Proof</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. Detailed File & Folder Audit Table (Exact Basis of Judgement) -->
+      <section class="card" id="file-audit-section">
+        <div class="card-header">
           <div>
-            <div class="verdict-summary" id="verdict-summary">Loading summary...</div>
-            <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.2rem;">Evidence-based classification grounded in byte entropy and AST markers.</div>
+            <h3 class="card-title">Detailed File & Folder Verification Log</h3>
+            <p class="card-subtitle">Every individual file and directory analyzed, with cryptographic hash checks, AST capability scans, and Shannon byte-entropy evaluation.</p>
+          </div>
+          <div class="filter-controls">
+            <button class="filter-btn active" onclick="filterAudit('all')">All Files (<span id="count-all">0</span>)</button>
+            <button class="filter-btn" onclick="filterAudit('exact')">Exact Matches (<span id="count-exact">0</span>)</button>
+            <button class="filter-btn" onclick="filterAudit('transformed')">Compiler Output (<span id="count-trans">0</span>)</button>
+            <button class="filter-btn" onclick="filterAudit('flagged')">Flagged / Delta (<span id="count-flagged">0</span>)</button>
           </div>
         </div>
-        <div class="score-box">
-          <span style="color: var(--text-muted); font-size: 0.75rem;">RISK SCORE:</span>
-          <span id="score-value" style="font-weight: 700; color: var(--accent-red);">100/100</span>
-        </div>
-      </div>
 
-      <!-- Coverage Strip -->
-      <div class="coverage-strip" id="coverage-strip"></div>
+        <div class="table-container">
+          <table class="audit-table">
+            <thead>
+              <tr>
+                <th>File / Directory Path</th>
+                <th>Classification</th>
+                <th>Evaluation & Judgement Basis</th>
+                <th>Entropy</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="audit-table-body">
+              <!-- Dynamically populated rows -->
+            </tbody>
+          </table>
+        </div>
+      </section>
 
-      <!-- Metadata Grid -->
-      <div class="meta-grid">
-        <div class="meta-item">
-          <span class="meta-label">Package & Version</span>
-          <span class="meta-val" id="meta-pkg">-</span>
-        </div>
-        <div class="meta-item">
-          <span class="meta-label">Archive SHA-256</span>
-          <span class="meta-val" id="meta-sha">-</span>
-        </div>
-        <div class="meta-item">
-          <span class="meta-label">Upstream Git Ref</span>
-          <span class="meta-val" id="meta-source">-</span>
-        </div>
-        <div class="meta-item">
-          <span class="meta-label">AI Explanation Engine</span>
-          <span class="meta-val" id="meta-model">-</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- Screen 5: Three-Pane Evidence & Diff Explorer -->
-    <section class="explorer-container" id="explorer-card" style="display: none;">
-      <!-- Left: File Tree -->
-      <div class="explorer-pane">
-        <div class="pane-header">
-          <span>Archive Inventory</span>
-          <span style="font-size: 0.7rem; color: var(--accent-cyan);">Files</span>
-        </div>
-        <div class="pane-content" id="file-list"></div>
-      </div>
-
-      <!-- Middle: Diff Viewer -->
-      <div class="explorer-pane">
-        <div class="pane-header">
-          <span>Source vs Published Diff</span>
-          <span style="font-size: 0.7rem; color: var(--text-muted);">Unified Diff</span>
-        </div>
-        <div class="pane-content" style="padding: 0.5rem;">
-          <pre class="diff-code" id="diff-viewer"></pre>
-        </div>
-      </div>
-
-      <!-- Right: Finding Breakdown & Qwen Explainer -->
-      <div class="explorer-pane">
-        <div class="pane-header">
-          <span>Finding Analysis</span>
-          <span style="font-size: 0.7rem; color: var(--accent-cyan);">Evidence</span>
-        </div>
-        <div class="pane-content">
-          <div class="finding-card">
-            <div class="finding-title">
-              <span style="font-weight: 700; font-family: var(--font-mono); font-size: 0.85rem;" id="finding-file">-</span>
-              <span class="finding-severity" id="finding-sev">CRITICAL</span>
-            </div>
-            <div style="font-size: 0.75rem; color: var(--text-secondary); display: flex; justify-content: space-between;">
-              <span>Shannon Entropy: <strong id="finding-entropy" style="color: var(--text-primary);">-</strong></span>
-              <span>Mapped: <strong id="finding-mapping" style="color: var(--text-primary);">-</strong></span>
-            </div>
-
-            <div style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-top: 0.25rem;">Grounded Evidence:</div>
-            <ul class="evidence-list" id="finding-evidence"></ul>
-
-            <!-- Local AI Explainer Box -->
-            <div class="qwen-box">
-              <div class="qwen-header">
-                <span>⚡ Qwen 2.5 Coder 7B Explanation</span>
-              </div>
-              <div class="qwen-text" id="qwen-explanation">-</div>
-            </div>
+      <!-- 3. README.md Concordance & Spec Alignment Matrix -->
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">README.md & Specification Concordance Matrix</h3>
+            <p class="card-subtitle">Objective evaluation comparing claims made in README.md against actual source code files, dependencies, and entrypoints (Zero vanity metrics).</p>
+          </div>
+          <div class="concordance-score-pill" id="concordance-pill">
+            <span class="score-num" id="concordance-pct">100%</span>
+            <span class="score-desc">Fidelity Match</span>
           </div>
         </div>
-      </div>
-    </section>
 
-    <!-- Screen 7: Action & Export Bar -->
-    <div class="action-bar">
-      <button class="btn-secondary" onclick="copyJsonReport()">Copy JSON Report</button>
-      <button class="btn-secondary" onclick="downloadAdvisory()">Download Markdown Advisory</button>
+        <div class="concordance-grid" id="concordance-grid">
+          <!-- Dynamically populated checklist items -->
+        </div>
+      </section>
+
+      <!-- 4. Local Open-Source AI Explainer (Qwen 2.5 Coder 7B) -->
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">Local Open-Source AI Security Explainer</h3>
+            <p class="card-subtitle">Powered by local Qwen 2.5 Coder 7B running via Ollama. Analyzes semantic intent and explains why discrepancies exist.</p>
+          </div>
+          <button class="btn-refresh-ai" onclick="runLiveAIInference()">
+            <span>Re-Analyze with Qwen AI</span>
+            <span>⟳</span>
+          </button>
+        </div>
+
+        <div class="ai-console">
+          <div class="ai-console-header">
+            <span class="console-label">Inference Model: <strong>qwen2.5-coder:7b</strong></span>
+            <span class="console-latency" id="ai-latency-tag">Latency: 38ms (Deterministic / Ollama Native)</span>
+          </div>
+          <div class="ai-console-output" id="ai-output-stream">
+            Loading semantic analysis...
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. Google Cloud Shell Runner (Sandboxed Execution) -->
+      <section class="cloudshell-box">
+        <div class="cloudshell-content">
+          <div class="cloudshell-badge">Sandboxed Ephemeral Execution</div>
+          <h2 class="cloudshell-title">Run Verification in Google Cloud Shell</h2>
+          <p class="cloudshell-description">
+            Test and reproduce this integrity audit in a secure, sandboxed Google Cloud VM without installing Python packages or modifying your local system environment.
+          </p>
+          <div class="cloudshell-command-box">
+            <code>git clone https://github.com/anant-rajj/pratyancha-hacktoberfest.git && cd pratyancha-hacktoberfest && pytest -v tests/</code>
+          </div>
+        </div>
+        <a 
+          href="https://shell.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/anant-rajj/pratyancha-hacktoberfest" 
+          target="_blank" 
+          class="btn-cloudshell-main"
+          id="btn-cloudshell-main"
+        >
+          <span>Launch Google Cloud Shell</span>
+          <span class="arrow">→</span>
+        </a>
+      </section>
+
     </div>
+
   </main>
+
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-left">
+        <span>VeriPack Open-Source Integrity Engine</span>
+        <span class="separator">•</span>
+        <span>Hacktoberfest 2026 Problem 04</span>
+      </div>
+      <div class="footer-right">
+        <span>Open-Weight AI: Qwen 2.5 Coder 7B</span>
+        <span class="separator">•</span>
+        <span>Zero Closed APIs</span>
+      </div>
+    </div>
+  </footer>
 
   <script src="app.js"></script>
 </body>
