@@ -1,6 +1,6 @@
 /**
- * VeriPack Enterprise Supply-Chain & Codebase Integrity Engine
- * Professional, Evidence-Backed Verification Logic
+ * VeriPack Retro Computer Workstation & CRT Terminal Engine
+ * Inspired by glucas.dev vintage CRT terminal interfaces
  */
 
 // Enterprise Knowledge Base & File Audit Records
@@ -13,8 +13,8 @@ const AUDIT_RECORDS = {
     description: "Every file, directory, and entrypoint in the package archive directly corresponds to upstream Git commits. AST capability scans confirmed zero unauthorized network exfiltrations, and Shannon byte entropy remains uniformly within standard code distributions.",
     meta_verdict: "Verified Clean (100% Provenance Match)",
     recommendation: "Safe for Production Deployment (0 Vulnerabilities)",
-    primary_action_text: "Download Verified Tarball",
-    secondary_action_text: "View Cryptographic Evidence",
+    primary_action_text: "DOWNLOAD VERIFIED TARBALL",
+    secondary_action_text: "INSPECT PROOF TABLE",
     concordance_score: "100%",
     
     // File-by-file audit log detailing the exact basis for judgement
@@ -93,7 +93,7 @@ const AUDIT_RECORDS = {
         path: "tests/test_analyzer.py",
         category: "exact",
         classification: "Automated Test Suite",
-        basis: "All 26 unit and CLI test cases pass in 0.41 seconds; offline monkeypatch fallback isolation tested.",
+        basis: "All 26 unit and CLI test cases pass in 0.43 seconds; offline monkeypatch fallback isolation tested.",
         evidence: "26/26 green pytest passing runs",
         entropy: "4.62 bits",
         status: "CLEAN",
@@ -152,8 +152,8 @@ const AUDIT_RECORDS = {
     description: "The package contains additional compiled files ('dist/index.js') not present in source form ('src/index.ts'). Our AST capability scan confirmed these are standard TypeScript transpilation artifacts that export identical public APIs and introduce 0 sensitive system capabilities.",
     meta_verdict: "Transpiled Build Artifacts (Expected Compiler Delta)",
     recommendation: "Safe to Install (No Harmful Code Present)",
-    primary_action_text: "Proceed with Installation",
-    secondary_action_text: "Inspect Transpiled Differences",
+    primary_action_text: "PROCEED WITH INSTALLATION",
+    secondary_action_text: "INSPECT TRANSPILED DIFFERENCES",
     concordance_score: "96%",
     
     files: [
@@ -215,8 +215,8 @@ const AUDIT_RECORDS = {
     description: "An unauthorized 'postinstall' script was inserted into package.json during publishing that does NOT exist anywhere in the public Git repository. It attempts to execute arbitrary shell commands during npm installation.",
     meta_verdict: "Manifest Hook Tampering (Supply-Chain Hazard)",
     recommendation: "Block Installation (Critical Tampering Hazard)",
-    primary_action_text: "Quarantine Package",
-    secondary_action_text: "View Injected Payload",
+    primary_action_text: "QUARANTINE PACKAGE",
+    secondary_action_text: "VIEW INJECTED PAYLOAD",
     concordance_score: "42%",
 
     files: [
@@ -262,8 +262,8 @@ const AUDIT_RECORDS = {
     description: "The package contains an unmapped file 'lib/x.min.js' that exists exclusively in the published archive. It exhibits high Shannon byte entropy (5.44 bits/byte) and decodes a hidden Base64 buffer to spawn system processes via child_process.exec.",
     meta_verdict: "Unmapped Ghost Backdoor (Severe Compromise)",
     recommendation: "Block Installation & Revoke Package",
-    primary_action_text: "Quarantine & Block",
-    secondary_action_text: "Inspect Obfuscated AST",
+    primary_action_text: "QUARANTINE & BLOCK",
+    secondary_action_text: "INSPECT OBFUSCATED AST",
     concordance_score: "28%",
 
     files: [
@@ -305,6 +305,66 @@ const AUDIT_RECORDS = {
 let currentKey = "pratyancha";
 let currentFilter = "all";
 
+// Hardware & Theme Controls
+function setPhosphor(theme) {
+  document.body.setAttribute("data-theme", theme);
+  document.querySelectorAll(".btn-theme").forEach(btn => btn.classList.remove("active"));
+  event.target.classList.add("active");
+}
+
+function toggleScanlines() {
+  const current = document.body.getAttribute("data-scanlines") !== "false";
+  const btn = document.getElementById("btn-scanlines");
+  if (current) {
+    document.body.setAttribute("data-scanlines", "false");
+    btn.textContent = "SCANLINES: OFF";
+    btn.classList.remove("active");
+  } else {
+    document.body.setAttribute("data-scanlines", "true");
+    btn.textContent = "SCANLINES: ON";
+    btn.classList.add("active");
+  }
+}
+
+function togglePower() {
+  const isPowerOn = document.body.getAttribute("data-power") !== "off";
+  const btn = document.getElementById("btn-power");
+  const led = document.getElementById("power-led");
+  const hwLed = document.getElementById("hw-led");
+
+  if (isPowerOn) {
+    document.body.setAttribute("data-power", "off");
+    btn.classList.remove("active");
+    if (led) led.style.opacity = "0.2";
+    if (hwLed) hwLed.style.background = "#333d32";
+  } else {
+    document.body.setAttribute("data-power", "on");
+    btn.classList.add("active");
+    if (led) led.style.opacity = "1";
+    if (hwLed) hwLed.style.background = "var(--phosphor)";
+  }
+}
+
+function toggleInfoPopover() {
+  const popover = document.getElementById("info-popover");
+  if (popover.style.display === "none" || popover.style.display === "") {
+    popover.style.display = "block";
+  } else {
+    popover.style.display = "none";
+  }
+}
+
+// Close popover if user clicks outside
+document.addEventListener("click", (e) => {
+  const popover = document.getElementById("info-popover");
+  const btn = document.getElementById("btn-info");
+  if (popover && popover.style.display === "block") {
+    if (!popover.contains(e.target) && e.target !== btn) {
+      popover.style.display = "none";
+    }
+  }
+});
+
 /**
  * Execute Verification based on input URL or package spec
  */
@@ -312,7 +372,7 @@ function executeVerification() {
   const inputVal = document.getElementById("repo-input").value.trim().toLowerCase();
   const btn = document.getElementById("btn-run-verify");
   
-  btn.innerHTML = `<span class="btn-text">Verifying...</span>`;
+  btn.innerHTML = `<span>VERIFYING PROVENANCE...</span>`;
   btn.style.opacity = "0.7";
 
   if (inputVal.includes("clean")) {
@@ -334,10 +394,10 @@ function executeVerification() {
   }
 
   setTimeout(() => {
-    btn.innerHTML = `<span class="btn-text">Run Full Verification</span><span class="btn-arrow">→</span>`;
+    btn.innerHTML = `<span>EXECUTE VERIFY [ENTER]</span>`;
     btn.style.opacity = "1";
     renderDashboard();
-  }, 300);
+  }, 250);
 }
 
 /**
@@ -348,7 +408,7 @@ function renderDashboard() {
 
   // 1. Safety Advisory Card
   const advCard = document.getElementById("advisory-card");
-  advCard.className = `card advisory-card ${data.status_class}`;
+  advCard.className = `term-card advisory-card ${data.status_class}`;
   
   document.getElementById("advisory-badge").textContent = data.badge;
   document.getElementById("advisory-headline").textContent = data.headline;
@@ -358,23 +418,23 @@ function renderDashboard() {
   const recEl = document.getElementById("meta-recommendation");
   recEl.textContent = data.recommendation;
   if (data.status_class === "SAFE") {
-    recEl.style.color = "#34d399";
+    recEl.style.color = "var(--color-clean)";
     document.getElementById("advisory-icon").textContent = "✓";
   } else if (data.status_class === "NOTICE") {
-    recEl.style.color = "#38bdf8";
+    recEl.style.color = "var(--color-transform)";
     document.getElementById("advisory-icon").textContent = "ℹ";
   } else if (data.status_class === "TAMPERED") {
-    recEl.style.color = "#fbbf24";
+    recEl.style.color = "var(--color-tamper)";
     document.getElementById("advisory-icon").textContent = "⚠";
   } else {
-    recEl.style.color = "#f87171";
+    recEl.style.color = "var(--color-compromise)";
     document.getElementById("advisory-icon").textContent = "✕";
   }
 
   const actionsBox = document.getElementById("decision-actions");
   actionsBox.innerHTML = `
-    <button class="btn-action primary" onclick="handleDecisionPrimary()">${data.primary_action_text}</button>
-    <button class="btn-action secondary" onclick="scrollToAudit()">${data.secondary_action_text}</button>
+    <button class="btn-term-action primary" onclick="handleDecisionPrimary()">${data.primary_action_text}</button>
+    <button class="btn-term-action secondary" onclick="scrollToAudit()">${data.secondary_action_text}</button>
   `;
 
   // 2. Render File & Folder Audit Table
@@ -443,7 +503,7 @@ function renderAuditTable(files) {
           <span class="basis-evidence">${f.evidence}</span>
         </div>
       </td>
-      <td><code style="font-family: var(--font-mono); font-size: 0.8rem; color: #94a3b8;">${f.entropy}</code></td>
+      <td><code style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--phosphor-hot);">${f.entropy}</code></td>
       <td><span class="status-tag ${f.status_tag}">${f.status}</span></td>
     `;
     tbody.appendChild(tr);
@@ -461,7 +521,7 @@ function typewriterAI(text) {
     if (i < text.length) {
       out.textContent += text.charAt(i);
       i++;
-      setTimeout(stream, 8);
+      setTimeout(stream, 7);
     }
   }
   stream();
@@ -473,9 +533,9 @@ function typewriterAI(text) {
 function runLiveAIInference() {
   const out = document.getElementById("ai-output-stream");
   const latency = document.getElementById("ai-latency-tag");
-  latency.textContent = "Querying local Qwen 2.5 Coder...";
-  latency.style.color = "#f59e0b";
-  out.textContent = "[Communicating with local Ollama daemon at http://localhost:11434...]";
+  latency.textContent = "QUERYING OLLAMA QWEN 2.5 CODER...";
+  latency.style.color = "#ffb000";
+  out.textContent = "[COMMUNICATING WITH LOCAL OLLAMA DAEMON AT http://localhost:11434...]";
 
   const t0 = performance.now();
   const rec = AUDIT_RECORDS[currentKey] || AUDIT_RECORDS.pratyancha;
@@ -498,8 +558,8 @@ function runLiveAIInference() {
   })
   .then(data => {
     const dt = Math.round(performance.now() - t0);
-    latency.textContent = `Live Qwen 2.5 Coder: ${dt}ms (Sub-Second Inferred)`;
-    latency.style.color = "#34d399";
+    latency.textContent = `LIVE QWEN 2.5 CODER: ${dt}ms (SUB-SECOND INFERRED)`;
+    latency.style.color = "var(--phosphor-hot)";
     typewriterAI(data.response);
   })
   .catch(() => {
@@ -516,15 +576,15 @@ function runLiveAIInference() {
     .then(r => r.json())
     .then(d => {
       const dt = Math.round(performance.now() - t0);
-      latency.textContent = `Ollama Direct: ${dt}ms`;
-      latency.style.color = "#34d399";
+      latency.textContent = `OLLAMA DIRECT: ${dt}ms`;
+      latency.style.color = "var(--phosphor-hot)";
       typewriterAI(`[Qwen 2.5 Coder 7B]: ${d.response}`);
     })
     .catch(() => {
       // 3. Fallback
       const dt = Math.round(performance.now() - t0);
-      latency.textContent = `Native Verification Engine (${dt}ms)`;
-      latency.style.color = "#34d399";
+      latency.textContent = `NATIVE WORKSTATION ENGINE (${dt}ms)`;
+      latency.style.color = "var(--phosphor-hot)";
       typewriterAI(rec.ai_analysis);
     });
   });
@@ -548,26 +608,6 @@ function scrollToAudit() {
 function showDownloadModal() {
   alert("VeriPack Verification Complete: SHA-256 integrity digest and Git provenance attested.");
 }
-
-function toggleInfoPopover() {
-  const popover = document.getElementById("info-popover");
-  if (popover.style.display === "none" || popover.style.display === "") {
-    popover.style.display = "block";
-  } else {
-    popover.style.display = "none";
-  }
-}
-
-// Close popover if user clicks outside
-document.addEventListener("click", (e) => {
-  const popover = document.getElementById("info-popover");
-  const btn = document.getElementById("btn-info");
-  if (popover && popover.style.display === "block") {
-    if (!popover.contains(e.target) && e.target !== btn) {
-      popover.style.display = "none";
-    }
-  }
-});
 
 // Initialize on page load
 window.onload = () => {
