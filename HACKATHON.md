@@ -1,7 +1,7 @@
 # HACKATHON.md
 
 ## Team name
-pratyancha
+Pratyancha
 
 ## Team members
 - Anant Raj
