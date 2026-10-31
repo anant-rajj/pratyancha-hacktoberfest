@@ -3,192 +3,281 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VeriPack — Supply-Chain Integrity & Evidence Explorer</title>
+  <title>VeriPack — Retro Computer Workstation & Supply-Chain Integrity Engine</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body data-theme="cyan" data-scanlines="true" data-power="on">
 
-  <!-- Glassmorphism Top Navigation -->
-  <header>
-    <div class="nav-container">
-      <a href="#" class="brand">
-        <div class="brand-badge">✓</div>
-        <div>
-          <span class="brand-title">VeriPack</span>
-          <span class="brand-tag">Hacktoberfest 2026</span>
-        </div>
-      </a>
-      <div class="header-right">
-        <div class="ai-status-pill">
-          <div class="pulse-circle"></div>
-          <span>Qwen 2.5 Coder 7B • Ollama Online</span>
-        </div>
-      </div>
-    </div>
-  </header>
+  <!-- Retro Desk & Workspace Environment (Glucas.dev Inspired) -->
+  <div class="desk-environment">
 
-  <main>
-    <!-- Amazon-Style Simple Search Card -->
-    <section class="search-card">
-      <div class="search-intro">
-        <h1>Verify Any GitHub Repo or Published Package</h1>
-        <p>VeriPack bridges the gap between public Git repositories and published tarballs on npm/PyPI to detect stealth backdoors, unmapped ghost files, and unauthorized install scripts.</p>
+    <!-- Top Scene Toolbar (Retro Computer Desk Controls) -->
+    <header class="scene-toolbar">
+      <div class="terminal-identity">
+        <span class="power-led" id="power-led"></span>
+        <span class="terminal-model">VERIPACK-84 WORKSTATION</span>
+        <span class="terminal-meta">// CRT DISPLAY // GLUCAS-THEMED SUPPLY-CHAIN EXPLORER</span>
       </div>
 
-      <!-- Main Search Bar -->
-      <div class="search-bar-wrap">
-        <input 
-          type="text" 
-          id="repo-input" 
-          class="search-input" 
-          value="https://github.com/anant-rajj/pratyancha-hacktoberfest" 
-          placeholder="Paste GitHub repository URL or package name (e.g. https://github.com/owner/repo or express@4.21.2)"
-        >
-        <button class="btn-verify" onclick="runCheck()">
-          <span>Verify Now</span>
-          <span>→</span>
+      <div class="scene-controls">
+        <!-- Phosphor Theme Selector -->
+        <div class="control-group">
+          <span class="control-label">PHOSPHOR:</span>
+          <button class="btn-theme active" id="theme-btn-cyan" onclick="setPhosphor('cyan')" title="Cyan Trinitron (Blue Theme)">CYAN (BLUE)</button>
+          <button class="btn-theme" id="theme-btn-green" onclick="setPhosphor('green')" title="P1 Green Phosphor">GREEN</button>
+          <button class="btn-theme" id="theme-btn-amber" onclick="setPhosphor('amber')" title="P3 Amber Phosphor">AMBER</button>
+        </div>
+
+        <!-- CRT Effects Toggle -->
+        <button class="btn-toggle active" id="btn-scanlines" onclick="toggleScanlines()" title="Toggle CRT scanlines">
+          SCANLINES: ON
+        </button>
+
+        <!-- Power Switch -->
+        <button class="btn-power active" id="btn-power" onclick="togglePower()" title="Toggle monitor power">
+          <span class="btn-power-light"></span>
+          CRT PWR
         </button>
       </div>
+    </header>
 
-      <!-- 1-Click Example Chips -->
-      <div class="samples-bar">
-        <span class="samples-label">Quick Samples:</span>
-        <button class="sample-chip active" id="chip-pratyancha" onclick="selectSample('pratyancha')">VeriPack (Official Repo)</button>
-        <button class="sample-chip" id="chip-clean_pkg" onclick="selectSample('clean_pkg')">Clean TypeScript (Case 1)</button>
-        <button class="sample-chip" id="chip-tampered_manifest" onclick="selectSample('tampered_manifest')">Injected Postinstall (Case 2)</button>
-        <button class="sample-chip" id="chip-ghost_backdoor" onclick="selectSample('ghost_backdoor')">Ghost Backdoor (Case 3)</button>
+    <!-- Physical Computer Monitor Chassis (The Retro Computer Frame) -->
+    <div class="monitor-chassis">
+      
+      <!-- Top Bezel Vents & Screws -->
+      <div class="bezel-top">
+        <div class="bezel-screw left"></div>
+        <div class="bezel-vents">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <div class="bezel-screw right"></div>
       </div>
-    </section>
 
-    <!-- Animated Verification Pipeline -->
-    <section class="progress-card" id="progress-card">
-      <div class="progress-header">
-        <h3 style="font-size: 1.2rem; font-weight: 700; color: var(--hack-cyan);">Running Supply-Chain Verification Pipeline...</h3>
-        <span style="font-size: 0.95rem; color: var(--safe-green); font-family: var(--font-mono);">Zip-Slip Guard: ACTIVE</span>
-      </div>
-      <div class="progress-steps-row">
-        <div class="step-card" id="step-1">
-          <span class="step-status"><div class="step-spinner"></div></span>
-          <span>1. Extract Tarball</span>
-        </div>
-        <div class="step-card" id="step-2">
-          <span class="step-status"><div class="step-spinner"></div></span>
-          <span>2. Verify SHA-256</span>
-        </div>
-        <div class="step-card" id="step-3">
-          <span class="step-status"><div class="step-spinner"></div></span>
-          <span>3. Resolve Git Tag</span>
-        </div>
-        <div class="step-card" id="step-4">
-          <span class="step-status"><div class="step-spinner"></div></span>
-          <span>4. Diff Manifests</span>
-        </div>
-        <div class="step-card" id="step-5">
-          <span class="step-status"><div class="step-spinner"></div></span>
-          <span>5. Capability Scan</span>
-        </div>
-        <div class="step-card" id="step-6">
-          <span class="step-status"><div class="step-spinner"></div></span>
-          <span>6. Local Qwen AI</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- Results Area -->
-    <div class="results-container" id="results-area">
-
-      <!-- 1. Sexy Verdict Hero Banner -->
-      <section class="verdict-hero SAFE" id="verdict-banner">
-        <div class="verdict-left">
-          <div class="verdict-symbol" id="verdict-icon">✅</div>
-          <div>
-            <div class="verdict-headline" id="verdict-title">SAFE TO USE — 100% VERIFIED</div>
-            <div class="verdict-subtext" id="verdict-desc">All published files match public GitHub source code. Zero unauthorized capabilities.</div>
-          </div>
-        </div>
-        <div class="verdict-badge-box" id="verdict-meta">
-          Score: 100/100 (Safe)
-        </div>
-      </section>
-
-      <!-- 2. What Is What: Summary & Inventory -->
-      <section class="content-card">
-        <div class="card-title-bar">
-          <div class="card-title">
-            <span>📋</span>
-            <span>What is What (Summary & Inventory)</span>
-          </div>
-          <span style="font-size: 0.95rem; color: var(--hack-cyan); font-family: var(--font-mono);">Artifact Inventory</span>
-        </div>
+      <!-- Main CRT Screen Bezel Housing -->
+      <div class="screen-housing">
         
-        <div class="eli5-callout" id="what-is-what-text">
-          Loading explanation...
-        </div>
+        <!-- CRT Screen Curved Border & Glass -->
+        <div class="crt-screen" id="crt-screen">
+          <div class="crt-glass-reflection"></div>
+          <div class="crt-scanline-overlay" id="crt-scanlines"></div>
+          <div class="crt-vignette"></div>
 
-        <!-- Files List Table -->
-        <div class="file-grid" id="files-table"></div>
-      </section>
+          <!-- Inside CRT: Terminal Interface & VeriPack Context Window -->
+          <div class="terminal-viewport" id="terminal-viewport">
 
-      <!-- 3. Specification & README Alignment Checklist -->
-      <section class="content-card">
-        <div class="card-title-bar">
-          <div class="card-title">
-            <span>🔍</span>
-            <span>How It Matches the Specifications & README</span>
+            <!-- Terminal System Header Bar -->
+            <div class="terminal-sys-bar">
+              <div class="sys-title">
+                <span class="sys-badge">VERIPACK OS 2.6</span>
+                <span class="sys-host">PROVENANCE-KERNEL (LOCAL HOST)</span>
+              </div>
+              <div class="sys-metrics">
+                <span class="metric-pill">OLLAMA: QWEN 2.5 CODER ONLINE</span>
+                <span class="metric-pill">ZIP-SLIP GUARD: LOCKED</span>
+                <a 
+                  href="https://shell.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/anant-rajj/pratyancha-hacktoberfest" 
+                  target="_blank" 
+                  class="btn-term-cloudshell"
+                >
+                  CLOUD SHELL ↗
+                </a>
+              </div>
+            </div>
+
+            <!-- Terminal Main Content (Our Complete Context Window) -->
+            <main class="terminal-content">
+
+              <!-- Hero Search Card -->
+              <section class="search-card">
+                <div class="search-intro">
+                  <h1>Verify Any GitHub Repo or Published Package</h1>
+                  <p>VeriPack bridges the gap between public Git repositories and published tarballs on npm/PyPI to detect stealth backdoors, unmapped ghost files, and unauthorized install scripts.</p>
+                </div>
+
+                <!-- Main Search Bar -->
+                <div class="search-bar-wrap">
+                  <input 
+                    type="text" 
+                    id="repo-input" 
+                    class="search-input" 
+                    value="https://github.com/anant-rajj/pratyancha-hacktoberfest" 
+                    placeholder="Paste GitHub repository URL or package name (e.g. https://github.com/owner/repo or express@4.21.2)"
+                  >
+                  <button class="btn-verify" id="btn-run-verify" onclick="runCheck()">
+                    <span>EXECUTE VERIFY</span>
+                    <span>→</span>
+                  </button>
+                </div>
+
+                <!-- 1-Click Example Chips -->
+                <div class="samples-bar">
+                  <span class="samples-label">Quick Samples:</span>
+                  <button class="sample-chip active" id="chip-pratyancha" onclick="selectSample('pratyancha')">VeriPack (Official Repo)</button>
+                  <button class="sample-chip" id="chip-clean_pkg" onclick="selectSample('clean_pkg')">Clean TypeScript (Case 1)</button>
+                  <button class="sample-chip" id="chip-tampered_manifest" onclick="selectSample('tampered_manifest')">Injected Postinstall (Case 2)</button>
+                  <button class="sample-chip" id="chip-ghost_backdoor" onclick="selectSample('ghost_backdoor')">Ghost Backdoor (Case 3)</button>
+                </div>
+              </section>
+
+              <!-- Animated Verification Pipeline -->
+              <section class="progress-card" id="progress-card">
+                <div class="progress-header">
+                  <h3 class="pipeline-title">Running Supply-Chain Verification Pipeline...</h3>
+                  <span class="pipeline-badge">Zip-Slip Guard: ACTIVE</span>
+                </div>
+                <div class="progress-steps-row">
+                  <div class="step-card" id="step-1">
+                    <span class="step-status"><div class="step-spinner"></div></span>
+                    <span>1. Extract Tarball</span>
+                  </div>
+                  <div class="step-card" id="step-2">
+                    <span class="step-status"><div class="step-spinner"></div></span>
+                    <span>2. Verify SHA-256</span>
+                  </div>
+                  <div class="step-card" id="step-3">
+                    <span class="step-status"><div class="step-spinner"></div></span>
+                    <span>3. Resolve Git Tag</span>
+                  </div>
+                  <div class="step-card" id="step-4">
+                    <span class="step-status"><div class="step-spinner"></div></span>
+                    <span>4. Diff Manifests</span>
+                  </div>
+                  <div class="step-card" id="step-5">
+                    <span class="step-status"><div class="step-spinner"></div></span>
+                    <span>5. Capability Scan</span>
+                  </div>
+                  <div class="step-card" id="step-6">
+                    <span class="step-status"><div class="step-spinner"></div></span>
+                    <span>6. Local Qwen AI</span>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Results Area -->
+              <div class="results-container" id="results-area">
+
+                <!-- 1. Verdict Hero Banner -->
+                <section class="verdict-hero SAFE" id="verdict-banner">
+                  <div class="verdict-left">
+                    <div class="verdict-symbol" id="verdict-icon">✅</div>
+                    <div>
+                      <div class="verdict-headline" id="verdict-title">SAFE TO USE — 100% VERIFIED</div>
+                      <div class="verdict-subtext" id="verdict-desc">All published files match public GitHub source code. Zero unauthorized capabilities.</div>
+                    </div>
+                  </div>
+                  <div class="verdict-badge-box" id="verdict-meta">
+                    Score: 100/100 (Safe)
+                  </div>
+                </section>
+
+                <!-- 2. What Is What: Summary & Inventory -->
+                <section class="content-card">
+                  <div class="card-title-bar">
+                    <div class="card-title">
+                      <span>📋</span>
+                      <span>What is What (Summary & Inventory)</span>
+                    </div>
+                    <span class="card-tag">Artifact Inventory</span>
+                  </div>
+                  
+                  <div class="eli5-callout" id="what-is-what-text">
+                    Loading explanation...
+                  </div>
+
+                  <!-- Files List Table -->
+                  <div class="file-grid" id="files-table"></div>
+                </section>
+
+                <!-- 3. Specification & README Alignment Checklist -->
+                <section class="content-card">
+                  <div class="card-title-bar">
+                    <div class="card-title">
+                      <span>🔍</span>
+                      <span>How It Matches the Specifications & README</span>
+                    </div>
+                    <span class="card-tag safe">Audit Checklist</span>
+                  </div>
+
+                  <div class="checklist-grid" id="checklist-container">
+                    <!-- Populated dynamically -->
+                  </div>
+                </section>
+
+                <!-- 4. Live Qwen 2.5 Coder AI Explainer Box -->
+                <section class="content-card">
+                  <div class="card-title-bar">
+                    <div class="card-title">
+                      <span>⚡</span>
+                      <span>Local AI Explanation Engine (Qwen 2.5 Coder 7B)</span>
+                    </div>
+                    <button class="btn-ping-ai" onclick="pingLiveAI()">▶ Run Live Inference</button>
+                  </div>
+
+                  <div class="live-ai-box">
+                    <div class="live-ai-header">
+                      <span class="ai-endpoint">Endpoint: http://localhost:11434/api/generate (Apple Silicon)</span>
+                      <span id="ai-latency-badge" class="ai-latency">Latency: 42ms</span>
+                    </div>
+                    <div class="live-ai-output" id="live-ai-response">
+                      [Qwen 2.5 Coder]: Discrepancy analysis active. Semantic diff verification confirmed zero capability escalation.
+                    </div>
+                  </div>
+                </section>
+
+                <!-- 5. Google Cloud Shell Runner -->
+                <section class="cloudshell-card">
+                  <div class="cloudshell-text">
+                    <div class="cloudshell-headline">
+                      <span>☁️</span>
+                      <span>Run on Google Cloud Shell (Zero Local Setup)</span>
+                    </div>
+                    <p class="cloudshell-info">
+                      Want to test and verify this repository yourself without installing anything on your Mac or computer? Click below to launch a free, isolated Google Cloud Shell container. Log in with your Google account and run the full test suite safely in the cloud.
+                    </p>
+                  </div>
+                  <a 
+                    href="https://shell.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/anant-rajj/pratyancha-hacktoberfest" 
+                    target="_blank" 
+                    class="btn-cloudshell-cta"
+                    id="btn-cloudshell-link"
+                  >
+                    <span>Open in Google Cloud Shell</span>
+                    <span>→</span>
+                  </a>
+                </section>
+
+              </div>
+            </main>
+
           </div>
-          <span style="font-size: 0.95rem; color: var(--safe-green); font-family: var(--font-mono);">Audit Checklist</span>
+        </div>
+      </div>
+
+      <!-- Bottom Bezel Hardware Controls & Vintage Emblem -->
+      <div class="bezel-bottom">
+        <div class="bezel-badge">
+          <span class="badge-accent">■</span>
+          <span class="badge-title">VERIPACK-84</span>
+          <span class="badge-sub">PROVENANCE ANALYZER</span>
         </div>
 
-        <div class="checklist-grid" id="checklist-container">
-          <!-- Populated dynamically -->
-        </div>
-      </section>
-
-      <!-- 4. Live Qwen 2.5 Coder AI Explainer Box -->
-      <section class="content-card">
-        <div class="card-title-bar">
-          <div class="card-title">
-            <span>⚡</span>
-            <span>Local AI Explanation Engine (Qwen 2.5 Coder 7B)</span>
+        <div class="bezel-controls">
+          <div class="knob-group">
+            <span class="knob-label">BRIGHT</span>
+            <div class="dial"></div>
           </div>
-          <button class="btn-ping-ai" onclick="pingLiveAI()">▶ Run Live Inference</button>
-        </div>
-
-        <div class="live-ai-box">
-          <div class="live-ai-header">
-            <span style="font-size: 0.98rem; color: var(--text-secondary); font-family: var(--font-mono);">Endpoint: http://localhost:11434/api/generate (Apple Silicon)</span>
-            <span id="ai-latency-badge" style="font-size: 0.95rem; color: var(--safe-green); font-family: var(--font-mono);">Latency: 42ms</span>
+          <div class="knob-group">
+            <span class="knob-label">CONTRAST</span>
+            <div class="dial"></div>
           </div>
-          <div class="live-ai-output" id="live-ai-response">
-            [Qwen 2.5 Coder]: Discrepancy analysis active. Semantic diff verification confirmed zero capability escalation.
+          <div class="power-rocker active" onclick="togglePower()">
+            <span class="rocker-ind"></span>
           </div>
         </div>
-      </section>
-
-      <!-- 5. Google Cloud Shell Runner (At the End) -->
-      <section class="cloudshell-card">
-        <div class="cloudshell-text">
-          <div class="cloudshell-headline">
-            <span>☁️</span>
-            <span>Run on Google Cloud Shell (Zero Local Setup)</span>
-          </div>
-          <p class="cloudshell-info">
-            Want to test and verify this repository yourself without installing anything on your Mac or computer? Click below to launch a free, isolated Google Cloud Shell container. Log in with your Google account and run the full test suite safely in the cloud.
-          </p>
-        </div>
-        <a 
-          href="https://shell.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/anant-rajj/pratyancha-hacktoberfest" 
-          target="_blank" 
-          class="btn-cloudshell-cta"
-          id="btn-cloudshell-link"
-        >
-          <span>Open in Google Cloud Shell</span>
-          <span>→</span>
-        </a>
-      </section>
+      </div>
 
     </div>
-  </main>
+  </div>
 
   <script src="app.js"></script>
 </body>
