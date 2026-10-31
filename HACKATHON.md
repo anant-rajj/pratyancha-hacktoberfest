@@ -13,6 +13,6 @@ Pratyancha
 Problem 4: Published Package vs Source Code Integrity Analyzer
 
 ## Models we use and why
-- Qwen 2.5 Coder 7B: Offline code review, AST conflict parsing, and semantic diff analysis running locally via Ollama.
-- Llama 3.1 8B: Testing provenance validation, commit verification, and logic classification running locally via Ollama.
-- SmolLM 360M: Ultra-fast (<50ms) intent routing and query classification on local Apple Silicon.
+- Qwen 2.5 Coder 7B: Semantic diff analysis and de-obfuscation explanation for suspicious package files locally via Ollama.
+- Llama 3.1 8B: Supply-chain risk summarization and human-readable security advisories locally via Ollama.
+- SmolLM 360M: Fast file-type triage and artifact classification on local Apple Silicon.
