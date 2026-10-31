@@ -53,8 +53,12 @@ def query_qwen_explainer(
         f"Explain in 2-3 concise sentences whether this discrepancy is a benign build artifact or a security threat, citing specific evidence."
     )
 
+    endpoint = os.getenv("VERIPACK_OLLAMA_URL", OLLAMA_ENDPOINT)
+    model = os.getenv("VERIPACK_MODEL", DEFAULT_MODEL)
+    timeout = float(os.getenv("VERIPACK_LLM_TIMEOUT", str(DEFAULT_TIMEOUT)))
+
     payload = {
-        "model": DEFAULT_MODEL,
+        "model": model,
         "prompt": prompt,
         "stream": False,
         "options": {
@@ -64,7 +68,7 @@ def query_qwen_explainer(
     }
 
     try:
-        resp = requests.post(OLLAMA_ENDPOINT, json=payload, timeout=DEFAULT_TIMEOUT)
+        resp = requests.post(endpoint, json=payload, timeout=timeout)
         if resp.status_code == 200:
             data = resp.json()
             explanation = data.get("response", "").strip()
