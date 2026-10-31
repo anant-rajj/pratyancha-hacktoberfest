@@ -1,7 +1,7 @@
 # HACKATHON.md
 
 ## Team name
-pratyancha
+Pratyancha
 
 ## Team members
 - Anant Raj
@@ -10,7 +10,7 @@ pratyancha
 - Amrit Sagar
 
 ## Problem statement
-Problem 1: Intelligent Git Conflict Resolution with Testing Provenance
+Problem 4: Published Package vs Source Code Integrity Analyzer
 
 ## Models we use and why
 - Qwen 2.5 Coder 7B: Offline code review, AST conflict parsing, and semantic diff analysis running locally via Ollama.
