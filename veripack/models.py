@@ -87,6 +87,7 @@ class Finding:
     file_path: str
     classification: FileStatus
     severity: Severity
+    verdict: Optional[Verdict] = None
     entropy: Optional[float] = None
     evidence: List[str] = field(default_factory=list)
     diff_snippet: str = ""
@@ -98,6 +99,8 @@ class Finding:
         d["classification"] = self.classification.value
         d["severity"] = self.severity.value
         d["archetype"] = self.archetype.value
+        if self.verdict is not None:
+            d["verdict"] = self.verdict.value
         return d
 
 
