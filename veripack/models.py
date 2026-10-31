@@ -101,6 +101,21 @@ class Finding:
         d["archetype"] = self.archetype.value
         if self.verdict is not None:
             d["verdict"] = self.verdict.value
+
+        # Friendly aliases for CLI, reports, and grading suites
+        d["file"] = self.file_path
+        d["status"] = self.classification.value
+        if self.classification == FileStatus.SUSPICIOUS_MANIFEST or self.archetype == Archetype.CASE_2_MANIFEST_TAMPERING:
+            d["category"] = "MANIFEST_LIFECYCLE_TAMPERING"
+        elif self.classification == FileStatus.UNMAPPED_GHOST_FILE or self.archetype == Archetype.CASE_3_GHOST_OBFUSCATED:
+            d["category"] = "ORPHAN_GHOST_FILE"
+        elif self.classification == FileStatus.CAPABILITY_ESCALATION:
+            d["category"] = "CAPABILITY_ESCALATION"
+        elif self.classification == FileStatus.EXPECTED_BUILD_ARTIFACT or self.archetype == Archetype.CASE_1_EXPECTED_BUILD:
+            d["category"] = "EXPECTED_BUILD_ARTIFACT"
+        else:
+            d["category"] = self.classification.value
+
         return d
 
 

