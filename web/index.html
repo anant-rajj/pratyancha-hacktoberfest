@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VeriPack — Retro CRT Workstation & Supply-Chain Integrity Terminal</title>
+  <title>Pratyancha / VeriPack — Supply-Chain Integrity &amp; Provenance Protocol</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body data-theme="green" data-scanlines="true" data-power="on" data-brightness="normal">
@@ -15,14 +15,14 @@
     <header class="scene-toolbar">
       <div class="tb-left">
         <span class="live-led"></span>
-        <span class="tb-title">VERIPACK ARCHIVE</span>
+        <span class="tb-title">PRATYANCHA / VERIPACK</span>
         <span class="tb-sep">/</span>
-        <span class="tb-sub">HACKTOBERFEST 2026</span>
+        <span class="tb-sub">PROVENANCE PROTOCOL (PROBLEM 04)</span>
       </div>
 
       <div class="tb-actions">
         <button class="tb-btn active" id="btn-desk" onclick="focusScreen()">✓ DESK VIEW</button>
-        <button class="tb-btn" onclick="triggerHelp()">↗ HELP</button>
+        <button class="tb-btn" onclick="triggerHelp()">↗ SPEC DOCS</button>
         <button class="tb-btn active" id="tb-power" onclick="togglePower()">• TERMINAL ON</button>
         <button class="tb-btn" id="btn-bright" onclick="cycleBrightness()">BRIGHTNESS NORMAL</button>
         <button class="tb-btn active" id="btn-theme-label" onclick="cyclePhosphor()">GREEN</button>
@@ -72,73 +72,78 @@
 
               <!-- CRT Top Status Bar -->
               <div class="crt-sys-bar">
-                <span class="sys-id">VERIPACK_OS // PROVENANCE-KERNEL</span>
-                <span class="sys-path">~</span>
-                <span class="sys-clock" id="live-clock">04:51:40</span>
+                <span class="sys-id">PRATYANCHA-OS v2.6.4 // PROVENANCE-KERNEL</span>
+                <span class="sys-path">SECURE_CHANNEL</span>
+                <span class="sys-clock" id="live-clock">05:00:00</span>
               </div>
 
               <!-- Inside TV Content Area -->
               <div class="tv-content">
 
-                <!-- ASCII Art Banner (Big Vintage Title) -->
-                <pre class="ascii-banner">
- _    _           _ _____            _    
-| |  | |         (_)  __ \          | |   
-| |  | | ___ _ __ _| |__) |_ _  ___ | | __
-| |/\| |/ _ \ '__| |  ___/ _` |/ __|| |/ /
- \  /\  /  __/ |  | | |  | (_| | (__ |   &lt; 
-  \/  \/ \___|_|  |_|_|   \__,_|\___||_|\_                </pre>
+                <!-- Official Enterprise Title Block (Clean, Sharp & Formal) -->
+                <div class="official-brand-header">
+                  <div class="brand-badge-box">
+                    <span class="brand-shield">🛡️</span>
+                    <div class="brand-titles">
+                      <div class="brand-main-title">PRATYANCHA <span class="brand-divider">/</span> VERIPACK</div>
+                      <div class="brand-protocol-sub">AUTOMATED SUPPLY-CHAIN INTEGRITY &amp; SOURCE PROVENANCE PROTOCOL</div>
+                    </div>
+                  </div>
+                  <div class="brand-meta-pill">HACKTOBERFEST 2026 • PROBLEM 04 COMPLIANCE SUITE • 26/26 TESTS VERIFIED</div>
+                </div>
 
-                <div class="tv-intro">
-                  <div class="tv-subhead">VERIPACK // SUPPLY-CHAIN INTEGRITY &amp; EVIDENCE ENGINE</div>
-                  <p class="tv-desc">
-                    Lead supply-chain provenance analyzer cross-examining published npm/PyPI tarballs against public Git repositories. Detect stealth backdoors, unauthorized postinstall hooks, and unmapped ghost files.
+                <div class="formal-intro-box">
+                  <p class="formal-desc">
+                    <strong>System Objective:</strong> Cryptographic and syntactic cross-examination between published registry packages (npm / PyPI tarballs) and public upstream Git repositories. Verifies compiler transformations, flags unauthorized lifecycle scripts, detects unmapped stealth ghost files, and enforces zero capability escalation via AST parsing and Shannon byte entropy heuristics.
                   </p>
-                  <div class="tv-guide">
-                    TYPE <strong>HELP</strong> FOR COMMANDS • TRY <strong>VERIFY</strong> OR SELECT SAMPLES BELOW
+                </div>
+
+                <!-- Verification Target Input Bar -->
+                <div class="verification-input-card">
+                  <div class="input-label-row">
+                    <span class="input-field-label">TARGET REPOSITORY OR REGISTRY PACKAGE SPECIFICATION:</span>
+                    <span class="input-mode-tag">Zip-Slip &amp; Tar-Slip Guard Active</span>
+                  </div>
+                  <div class="input-form-row">
+                    <span class="input-prefix">&gt;</span>
+                    <input 
+                      type="text" 
+                      id="target-input" 
+                      class="target-input" 
+                      value="https://github.com/anant-rajj/pratyancha-hacktoberfest"
+                      placeholder="Enter GitHub URL or package@version (e.g. https://github.com/owner/repo or express@4.21.2)"
+                    >
+                    <button class="btn-run-verify" id="btn-verify" onclick="runCheck()">
+                      <span>VERIFY PACKAGE</span>
+                      <span class="btn-arrow">→</span>
+                    </button>
+                  </div>
+
+                  <!-- Clean Evaluation Archetype Selectors -->
+                  <div class="archetype-bar">
+                    <span class="archetype-label">Select Test Evaluation Archetype:</span>
+                    <div class="archetype-chips">
+                      <button class="arch-chip active" id="chip-pratyancha" onclick="selectSample('pratyancha')">
+                        <span class="arch-dot">●</span> Official Pratyancha Repository (100% Compliant)
+                      </button>
+                      <button class="arch-chip" id="chip-clean_pkg" onclick="selectSample('clean_pkg')">
+                        <span class="arch-dot">●</span> Case 1: Clean TypeScript Build (Safe Transform)
+                      </button>
+                      <button class="arch-chip" id="chip-tampered_manifest" onclick="selectSample('tampered_manifest')">
+                        <span class="arch-dot">●</span> Case 2: Injected Lifecycle Hook (Tampered)
+                      </button>
+                      <button class="arch-chip" id="chip-ghost_backdoor" onclick="selectSample('ghost_backdoor')">
+                        <span class="arch-dot">●</span> Case 3: Obfuscated Ghost Backdoor (Compromised)
+                      </button>
+                    </div>
                   </div>
                 </div>
-
-                <!-- CLI Command Input Bar -->
-                <div class="cli-command-box">
-                  <span class="cli-prompt">VERIPACK@DEV:~$</span>
-                  <input 
-                    type="text" 
-                    id="cli-input" 
-                    class="cli-input" 
-                    value="verify https://github.com/anant-rajj/pratyancha-hacktoberfest"
-                    placeholder="type a command (e.g. verify, samples, qwen, help)..."
-                  >
-                  <button class="cli-btn" id="btn-cli-run" onclick="handleCliSubmit()">EXECUTE [ENTER]</button>
-                </div>
-
-                <!-- Fast Command Navigation Pills -->
-                <div class="cmd-pills-row">
-                  <button class="cmd-pill active" onclick="navTo('samples')">SAMPLES</button>
-                  <button class="cmd-pill" onclick="navTo('verdict')">VERDICT</button>
-                  <button class="cmd-pill" onclick="navTo('inventory')">INVENTORY</button>
-                  <button class="cmd-pill" onclick="navTo('checklist')">CHECKLIST</button>
-                  <button class="cmd-pill" onclick="navTo('qwen')">QWEN AI</button>
-                  <button class="cmd-pill" onclick="navTo('cloudshell')">CLOUD SHELL</button>
-                  <button class="cmd-pill" onclick="runCheck()">RUN AUDIT</button>
-                </div>
-
-                <!-- Quick Samples Chips -->
-                <section class="samples-section" id="sec-samples">
-                  <span class="samples-label">QUICK EVALUATION ARCHETYPES:</span>
-                  <div class="samples-chips">
-                    <button class="sample-chip active" id="chip-pratyancha" onclick="selectSample('pratyancha')">VeriPack (Official Repo)</button>
-                    <button class="sample-chip" id="chip-clean_pkg" onclick="selectSample('clean_pkg')">Clean TypeScript (Case 1)</button>
-                    <button class="sample-chip" id="chip-tampered_manifest" onclick="selectSample('tampered_manifest')">Injected Postinstall (Case 2)</button>
-                    <button class="sample-chip" id="chip-ghost_backdoor" onclick="selectSample('ghost_backdoor')">Ghost Backdoor (Case 3)</button>
-                  </div>
-                </section>
 
                 <!-- Animated 6-Step Verification Pipeline -->
                 <section class="progress-card" id="progress-card">
                   <div class="progress-header">
-                    <h3 class="pipeline-title">&gt; RUNNING SUPPLY-CHAIN VERIFICATION PIPELINE...</h3>
-                    <span class="pipeline-badge">Zip-Slip Defense: ACTIVE</span>
+                    <h3 class="pipeline-title">&gt; EXECUTING 6-TIER PROVENANCE VERIFICATION PIPELINE...</h3>
+                    <span class="pipeline-badge">Path.relative_to Bounds: ENFORCED</span>
                   </div>
                   <div class="progress-steps-row">
                     <div class="step-card" id="step-1">
@@ -171,45 +176,59 @@
                 <!-- Results Layout Inside TV Screen -->
                 <div class="results-container" id="results-area">
 
-                  <!-- 1. Verdict Hero Banner -->
-                  <section class="verdict-hero SAFE" id="verdict-banner">
-                    <div class="verdict-left">
-                      <div class="verdict-symbol" id="verdict-icon">✅</div>
-                      <div>
-                        <div class="verdict-headline" id="verdict-title">SAFE TO USE — 100% VERIFIED</div>
-                        <div class="verdict-subtext" id="verdict-desc">All published files match public GitHub source code. Zero unauthorized capabilities.</div>
-                      </div>
-                    </div>
-                    <div class="verdict-badge-box" id="verdict-meta">
-                      Score: 100/100 (Safe)
-                    </div>
-                  </section>
-
-                  <!-- 2. What Is What Summary & Inventory -->
-                  <section class="content-card" id="sec-inventory">
+                  <!-- ========================================================
+                       SECTION 1: Detailed File-Level Provenance Verification
+                       ======================================================== -->
+                  <section class="content-card" id="sec-files">
                     <div class="card-title-bar">
                       <div class="card-title">
                         <span>📋</span>
-                        <span>SECTION 1: WHAT IS WHAT (SUMMARY &amp; INVENTORY)</span>
+                        <span>SECTION 1: DETAILED FILE-LEVEL PROVENANCE &amp; ANOMALY VERIFICATION</span>
                       </div>
-                      <span class="card-tag">Artifact Inventory</span>
+                      <span class="card-tag">Granular Cryptographic Audit</span>
                     </div>
                     
-                    <div class="eli5-callout" id="what-is-what-text">
-                      Loading explanation...
+                    <div class="section-explanation-box">
+                      <div class="spec-lead">
+                        <strong>Verification Methodology:</strong> Every file present in the published tarball is cross-examined against the upstream Git tree using three independent metrics:
+                      </div>
+                      <ul class="methodology-list">
+                        <li><strong>SHA-256 Cryptographic Checksum:</strong> Verifies exact byte-for-byte matches for identical source files.</li>
+                        <li><strong>AST Syntactic Capability Extraction:</strong> For transformed files (e.g. <code>src/index.ts</code> &rarr; <code>dist/index.js</code>), verifies that zero unauthorized runtime capabilities (<code>child_process.exec</code>, <code>eval</code>, <code>net.Socket</code>) were injected.</li>
+                        <li><strong>Shannon Byte Entropy Heuristic:</strong> Tests file information density on an 8.0-bit scale; flags any unmapped file with entropy &gt; 5.0 bits as an obfuscated or packed payload.</li>
+                      </ul>
                     </div>
 
-                    <div class="file-grid" id="files-table"></div>
+                    <!-- Granular File Verification Table -->
+                    <div class="file-verification-matrix">
+                      <div class="matrix-header-row">
+                        <span class="col-file">File Path &amp; Discrepancy</span>
+                        <span class="col-origin">Origin / Mapping</span>
+                        <span class="col-technical">Technical Proof &amp; Entropy</span>
+                        <span class="col-status">Verification Status</span>
+                      </div>
+                      <div class="file-grid" id="files-table">
+                        <!-- Populated dynamically -->
+                      </div>
+                    </div>
                   </section>
 
-                  <!-- 3. Specification & README Alignment Checklist -->
-                  <section class="content-card" id="sec-checklist">
+                  <!-- ========================================================
+                       SECTION 2: Specification & README Concordance Matrix
+                       ======================================================== -->
+                  <section class="content-card" id="sec-spec">
                     <div class="card-title-bar">
                       <div class="card-title">
                         <span>🔍</span>
-                        <span>SECTION 2: SPECIFICATION &amp; README CONCORDANCE MATRIX</span>
+                        <span>SECTION 2: SPECIFICATION &amp; README CONCORDANCE MATRIX (PASS / FAIL AUDIT)</span>
                       </div>
-                      <span class="card-tag safe">Audit Checklist</span>
+                      <span class="card-tag safe">100% Green Verification</span>
+                    </div>
+
+                    <div class="section-explanation-box">
+                      <p class="matrix-intro">
+                        Automated compliance checks verifying that the package, author metadata, repository structure, and build processes faithfully satisfy the Problem 04 specification rubric:
+                      </p>
                     </div>
 
                     <div class="checklist-grid" id="checklist-container">
@@ -217,36 +236,66 @@
                     </div>
                   </section>
 
-                  <!-- 4. Local AI Explanation Engine (Qwen 2.5 Coder 7B) -->
-                  <section class="content-card" id="sec-qwen">
+                  <!-- ========================================================
+                       SECTION 3: Final Security Verdict & Production Clearance
+                       ======================================================== -->
+                  <section class="content-card" id="sec-verdict-summary">
                     <div class="card-title-bar">
                       <div class="card-title">
-                        <span>⚡</span>
-                        <span>SECTION 3: LOCAL AI EXPLANATION ENGINE (QWEN 2.5 CODER 7B)</span>
+                        <span>⚖️</span>
+                        <span>SECTION 3: FINAL SECURITY VERDICT &amp; PRODUCTION CLEARANCE</span>
                       </div>
-                      <button class="btn-ping-ai" onclick="pingLiveAI()">▶ Run Live Inference</button>
+                      <span class="card-tag" id="verdict-grade-tag">Grade: A+ Verified</span>
                     </div>
 
-                    <div class="live-ai-box">
-                      <div class="live-ai-header">
-                        <span class="ai-endpoint">Endpoint: http://localhost:11434/api/generate (Apple Silicon)</span>
-                        <span id="ai-latency-badge" class="ai-latency">Latency: 42ms</span>
+                    <!-- Big Prominent Clearance Hero Banner -->
+                    <div class="verdict-hero SAFE" id="verdict-banner">
+                      <div class="verdict-left">
+                        <div class="verdict-symbol" id="verdict-icon">✅</div>
+                        <div class="verdict-text-block">
+                          <div class="verdict-headline" id="verdict-title">APPROVED FOR PRODUCTION DEPLOYMENT</div>
+                          <div class="verdict-subtext" id="verdict-desc">
+                            Is it safe to download and use? <strong>YES.</strong> All tarball contents match public Git source code. Zero unauthorized capabilities or backdoor scripts detected.
+                          </div>
+                        </div>
                       </div>
+                      <div class="verdict-badge-box" id="verdict-meta">
+                        Security Score: 100/100 (Safe)
+                      </div>
+                    </div>
+
+                    <!-- Comprehensive Plain-English AI Explanation (Qwen 2.5 Coder 7B) -->
+                    <div class="ai-verdict-container">
+                      <div class="ai-box-header">
+                        <div class="ai-box-title">
+                          <span>⚡</span>
+                          <span>Qwen 2.5 Coder 7B Comprehensive Security Explanation (Plain English)</span>
+                        </div>
+                        <button class="btn-ping-ai" onclick="pingLiveAI()">▶ Run Live Qwen Inference</button>
+                      </div>
+
+                      <div class="ai-meta-bar">
+                        <span class="ai-endpoint">Local Inference Daemon: http://localhost:11434/api/generate (Apple Silicon)</span>
+                        <span id="ai-latency-badge" class="ai-latency">Latency: 42ms • Model: qwen2.5-coder:7b</span>
+                      </div>
+
                       <div class="live-ai-output" id="live-ai-response">
-                        [Qwen 2.5 Coder]: Discrepancy analysis active. Semantic diff verification confirmed zero capability escalation.
+                        [Qwen 2.5 Coder 7B]: Initializing discrepancy explanation...
                       </div>
                     </div>
                   </section>
 
-                  <!-- 5. Google Cloud Shell Runner -->
+                  <!-- ========================================================
+                       SECTION 4: Google Cloud Shell Isolated Container
+                       ======================================================== -->
                   <section class="cloudshell-card" id="sec-cloudshell">
                     <div class="cloudshell-text">
                       <div class="cloudshell-headline">
                         <span>☁️</span>
-                        <span>SECTION 4: GOOGLE CLOUD SHELL (ZERO LOCAL SETUP)</span>
+                        <span>SECTION 4: RUN ON GOOGLE CLOUD SHELL (ZERO LOCAL SETUP)</span>
                       </div>
                       <p class="cloudshell-info">
-                        Want to test and verify this repository yourself without installing anything on your Mac or computer? Click below to launch a free, isolated Google Cloud Shell container. Log in with your Google account and run the full test suite safely in the cloud.
+                        Want to test, inspect, and verify this repository yourself without installing anything on your Mac or local machine? Click below to launch a free, isolated Google Cloud Shell container. Sign in with your Google account to run the full pytest test suite safely in the cloud.
                       </p>
                     </div>
                     <a 
@@ -271,7 +320,7 @@
         <div class="bezel-bottom-trim">
           <div class="bezel-badge">
             <span class="badge-dot">■</span>
-            <span class="badge-text">VERIPACK-84 PROVENANCE TERMINAL</span>
+            <span class="badge-text">PRATYANCHA-84 SECURE WORKSTATION</span>
           </div>
         </div>
       </main>
@@ -302,7 +351,7 @@
 
     <!-- Bottom Scene Status Bar (Glucas Footer) -->
     <footer class="scene-bottom">
-      <button class="footer-btn" onclick="triggerAuditNote()">READ AUDIT NOTE</button>
+      <button class="footer-btn" onclick="triggerAuditNote()">READ SPECIFICATION NOTE</button>
       <div class="footer-center">
         SCROLL TV SCREEN TO EXPLORE • OLLAMA LOCAL AI ONLINE • 26 TESTS PASSING • HACKTOBERFEST 2026
       </div>
