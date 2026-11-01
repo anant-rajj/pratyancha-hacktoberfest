@@ -21,6 +21,7 @@ import requests
 from veripack.models import PackageMetadata, SourceMetadata
 
 MAX_MEMBER_SIZE_BYTES = 25 * 1024 * 1024  # 25 MB max per file
+MAX_TOTAL_EXTRACTED_BYTES = 150 * 1024 * 1024  # 150 MB cumulative decompressed ceiling
 MAX_TOTAL_FILES = 5000                   # 5,000 max files per archive
 REQUEST_TIMEOUT_SECONDS = 15
 
@@ -80,6 +81,7 @@ def _safe_extract_tar(archive_path: Path, dest_dir: Path) -> None:
         if len(members) > MAX_TOTAL_FILES:
             raise ValueError(f"Archive exceeds maximum allowable file count: {len(members)} > {MAX_TOTAL_FILES}")
 
+        total_bytes = 0
         for member in members:
             # Reject special device nodes
             if member.isdev() or member.ischr() or member.isblk() or member.isfifo():
@@ -88,6 +90,10 @@ def _safe_extract_tar(archive_path: Path, dest_dir: Path) -> None:
             # Size limit check
             if member.size > MAX_MEMBER_SIZE_BYTES:
                 raise ValueError(f"Archive member exceeds 25 MB limit: {member.name} ({member.size} bytes)")
+
+            total_bytes += member.size
+            if total_bytes > MAX_TOTAL_EXTRACTED_BYTES:
+                raise ValueError(f"Archive exceeds cumulative decompression threshold ({total_bytes} > {MAX_TOTAL_EXTRACTED_BYTES} bytes)")
 
             # Resolve target and verify no directory traversal
             target_path = (dest_dir / member.name).resolve()
@@ -118,9 +124,14 @@ def _safe_extract_zip(archive_path: Path, dest_dir: Path) -> None:
         if len(infolist) > MAX_TOTAL_FILES:
             raise ValueError(f"Archive exceeds maximum allowable file count: {len(infolist)} > {MAX_TOTAL_FILES}")
 
+        total_bytes = 0
         for info in infolist:
             if info.file_size > MAX_MEMBER_SIZE_BYTES:
                 raise ValueError(f"Archive member exceeds 25 MB limit: {info.filename} ({info.file_size} bytes)")
+
+            total_bytes += info.file_size
+            if total_bytes > MAX_TOTAL_EXTRACTED_BYTES:
+                raise ValueError(f"Archive exceeds cumulative decompression threshold ({total_bytes} > {MAX_TOTAL_EXTRACTED_BYTES} bytes)")
 
             target_path = (dest_dir / info.filename).resolve()
             try:

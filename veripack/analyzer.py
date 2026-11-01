@@ -34,7 +34,7 @@ DEV_ONLY_PATTERNS = {
     ".github", ".git", "tests", "test", "__tests__", "docs", ".eslintrc", ".prettierrc",
     "tsconfig.json", ".gitignore", "jest.config.js", "Makefile", ".travis.yml"
 }
-EXECUTABLE_EXTENSIONS = {".js", ".mjs", ".cjs", ".py", ".sh", ".bash", ".so", ".dll", ".wasm"}
+EXECUTABLE_EXTENSIONS = {".js", ".mjs", ".cjs", ".py", ".sh", ".bash", ".so", ".dll", ".dylib", ".node", ".exe", ".bin", ".wasm"}
 
 
 def analyze_integrity(
@@ -389,6 +389,21 @@ def _analyze_ghost_file(pkg_file: Path, rel_path: str, enable_llm: bool) -> Find
         evidence.extend(obfuscation_signals)
     for cat, tokens in caps.items():
         evidence.append(f"Sensitive capability [{cat}]: {', '.join(sorted(tokens))}")
+
+    # Compiled native binary backdoor check
+    if ext in {".node", ".so", ".dylib", ".dll", ".exe", ".bin"}:
+        evidence.append(f"unmapped_native_binary: {ext} compiled artifact published without source origin")
+        return Finding(
+            file_path=rel_path,
+            classification=FileStatus.UNMAPPED_GHOST_FILE,
+            severity=Severity.CRITICAL,
+            verdict=Verdict.COMPROMISED,
+            evidence=evidence,
+            explanation=f"CRITICAL: Pre-compiled binary '{rel_path}' injected into published release with no source counterpart.",
+            archetype=Archetype.CASE_3_GHOST_OBFUSCATED,
+            entropy=entropy,
+            diff_snippet="Pre-compiled native binary",
+        )
 
     is_executable = ext in EXECUTABLE_EXTENSIONS
     is_high_risk = is_executable and (entropy >= 5.8 or len(obfuscation_signals) > 0 or len(caps) > 0)
