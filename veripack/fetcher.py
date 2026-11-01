@@ -21,8 +21,8 @@ import requests
 from veripack.models import PackageMetadata, SourceMetadata
 
 MAX_MEMBER_SIZE_BYTES = 25 * 1024 * 1024  # 25 MB max per file
-MAX_TOTAL_EXTRACTED_BYTES = 150 * 1024 * 1024  # 150 MB cumulative decompressed ceiling
-MAX_TOTAL_FILES = 5000                   # 5,000 max files per archive
+MAX_TOTAL_EXTRACTED_BYTES = 500 * 1024 * 1024  # 500 MB cumulative decompressed ceiling
+MAX_TOTAL_FILES = 25000                  # 25,000 max files per archive (supports real-world monorepos)
 REQUEST_TIMEOUT_SECONDS = 15
 
 

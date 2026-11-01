@@ -57,7 +57,7 @@ def test_decompression_bomb_cumulative_size_limit():
         # using zipfile's compressed stream of repeated zeroes so the file is tiny on disk
         with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as zf:
             chunk = b"\x00" * (24 * 1024 * 1024)
-            for i in range(7):
+            for i in range(22):
                 zf.writestr(f"large_file_{i}.bin", chunk)
 
         with pytest.raises(ValueError, match="Archive exceeds cumulative decompression threshold"):
