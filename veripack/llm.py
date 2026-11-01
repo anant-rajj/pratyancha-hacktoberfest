@@ -22,6 +22,7 @@ def query_qwen_explainer(
     evidence: List[str],
     diff_snippet: str = "",
     entropy: Optional[float] = None,
+    custom_prompt: Optional[str] = None,
 ) -> str:
     """
     Asks local Qwen 2.5 Coder 7B to analyze the discrepancy and explain why it exists
@@ -38,20 +39,23 @@ def query_qwen_explainer(
         entropy=entropy,
     )
 
-    # 2. Bounded diff snippet (max 40 lines to maintain fast sub-second inference)
-    lines = diff_snippet.splitlines()[:40]
-    bounded_snippet = "\n".join(lines)
+    if custom_prompt:
+        prompt = custom_prompt
+    else:
+        # 2. Bounded diff snippet (max 40 lines to maintain fast sub-second inference)
+        lines = diff_snippet.splitlines()[:40]
+        bounded_snippet = "\n".join(lines)
 
-    prompt = (
-        f"You are a software supply-chain security auditor for VeriPack.\n"
-        f"Analyze this file discrepancy between a published package archive and upstream Git repository:\n"
-        f"File: {file_path}\n"
-        f"Classification: {classification}\n"
-        f"Evidence: {', '.join(evidence)}\n"
-        f"Entropy: {entropy if entropy is not None else 'N/A'}\n"
-        f"Code Hunk:\n```\n{bounded_snippet}\n```\n\n"
-        f"Explain in 2-3 concise sentences whether this discrepancy is a benign build artifact or a security threat, citing specific evidence."
-    )
+        prompt = (
+            f"You are a software supply-chain security auditor for VeriPack.\n"
+            f"Analyze this file discrepancy between a published package archive and upstream Git repository:\n"
+            f"File: {file_path}\n"
+            f"Classification: {classification}\n"
+            f"Evidence: {', '.join(evidence)}\n"
+            f"Entropy: {entropy if entropy is not None else 'N/A'}\n"
+            f"Code Hunk:\n```\n{bounded_snippet}\n```\n\n"
+            f"Explain in 2-3 concise sentences whether this discrepancy is a benign build artifact or a security threat, citing specific evidence."
+        )
 
     endpoint = os.getenv("VERIPACK_OLLAMA_URL", OLLAMA_ENDPOINT)
     model = os.getenv("VERIPACK_MODEL", DEFAULT_MODEL)

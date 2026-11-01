@@ -24,10 +24,11 @@ class VeriPackHandler(http.server.SimpleHTTPRequestHandler):
                 import json
                 data = json.loads(body.decode("utf-8"))
                 file_path = data.get("file_path", "")
-                classification = data.get("classification", "")
+                classification = data.get("classification", "EXPECTED_BUILD_ARTIFACT")
                 evidence = data.get("evidence", [])
                 diff_snippet = data.get("diff_snippet", "")
                 entropy = data.get("entropy")
+                prompt = data.get("prompt", "")
 
                 from veripack.llm import query_qwen_explainer
                 explanation = query_qwen_explainer(
@@ -36,6 +37,7 @@ class VeriPackHandler(http.server.SimpleHTTPRequestHandler):
                     evidence=evidence,
                     diff_snippet=diff_snippet,
                     entropy=entropy,
+                    custom_prompt=prompt if prompt else None,
                 )
                 response_data = json.dumps({"response": explanation}).encode("utf-8")
                 self.send_response(200)
