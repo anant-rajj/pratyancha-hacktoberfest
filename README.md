@@ -10,9 +10,18 @@
 > **Event:** Hacktoberfest 2026 | Hack Day Sonipat (Rishihood University x DevClub)  
 > **Team:** `pratyancha` — **Anant Raj (Lead)**, **Anshul Pandey**, **Vinayak Agrawal**, **Amrit Sagar**  
 > **Problem Statement 04:** Published Package vs Source Code Integrity Analyzer  
-> **Live Interactive Terminal Dashboard:** [https://anant-rajj.github.io/pratyancha-hacktoberfest/](https://anant-rajj.github.io/pratyancha-hacktoberfest/)
+> **Live Interactive Terminal Dashboard:** [https://anant-rajj.github.io/pratyancha-hacktoberfest/](https://anant-rajj.github.io/pratyancha-hacktoberfest/)  
+> **Direct ZIP Download (1-Click):** [Download pratyancha-hacktoberfest.zip](https://github.com/anant-rajj/pratyancha-hacktoberfest/archive/refs/heads/main.zip)
 
 ---
+
+## ⚡ 30-Second Quick Download & Run (One-Liner)
+
+Copy and paste this single command into your terminal:
+
+```bash
+git clone https://github.com/anant-rajj/pratyancha-hacktoberfest.git && cd pratyancha-hacktoberfest && pip install -r requirements.txt && python3 -m veripack --self-test
+```
 
 ## ⚡ Executive Summary & Live Deployment
 
