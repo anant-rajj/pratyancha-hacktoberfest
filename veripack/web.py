@@ -220,6 +220,18 @@ def verify_target_backend(target: str) -> Dict[str, Any]:
         if "pratyancha" in PRESETS:
             return PRESETS["pratyancha"]
 
+    if "express" in low:
+        if "express" in PRESETS:
+            return PRESETS["express"]
+
+    if "flask" in low:
+        if "flask" in PRESETS:
+            return PRESETS["flask"]
+
+    if "event" in low and "stream" in low:
+        if "event_stream" in PRESETS:
+            return PRESETS["event_stream"]
+
     if "clean_pkg" in low or "case 1" in low:
         if "clean_pkg" in PRESETS:
             return PRESETS["clean_pkg"]
