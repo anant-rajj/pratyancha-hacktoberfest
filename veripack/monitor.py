@@ -64,7 +64,8 @@ def check_release_once(
         pkg_name = getattr(pkg_meta, "package_name", None) or getattr(pkg_meta, "name", npm_spec or pypi_spec)
         version = getattr(pkg_meta, "version", "unknown")
         extracted_pkg = (
-            getattr(pkg_meta, "extracted_dir", None)
+            getattr(pkg_meta, "extracted_path", None)
+            or getattr(pkg_meta, "extracted_dir", None)
             or getattr(pkg_meta, "extract_dir", None)
             or getattr(pkg_meta, "root_dir", None)
             or getattr(pkg_meta, "path", None)
@@ -79,7 +80,8 @@ def check_release_once(
 
         src_meta = fetcher.fetch_upstream_source(repo_url, version, git_head, work_dir / "src")
         extracted_src = (
-            getattr(src_meta, "extracted_dir", None)
+            getattr(src_meta, "source_path", None)
+            or getattr(src_meta, "extracted_dir", None)
             or getattr(src_meta, "extract_dir", None)
             or getattr(src_meta, "root_dir", None)
             or getattr(src_meta, "path", None)

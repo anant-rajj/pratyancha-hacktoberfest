@@ -16,6 +16,46 @@ class VeriPackHandler(http.server.SimpleHTTPRequestHandler):
         # Clean server logs
         sys.stderr.write(f"[VeriPack Web] {args[0]} - {args[1]}\n")
 
+    def do_POST(self):
+        if self.path == "/api/qwen":
+            content_length = int(self.headers.get("Content-Length", 0))
+            body = self.rfile.read(content_length)
+            try:
+                import json
+                data = json.loads(body.decode("utf-8"))
+                file_path = data.get("file_path", "")
+                classification = data.get("classification", "")
+                evidence = data.get("evidence", [])
+                diff_snippet = data.get("diff_snippet", "")
+                entropy = data.get("entropy")
+
+                from veripack.llm import query_qwen_explainer
+                explanation = query_qwen_explainer(
+                    file_path=file_path,
+                    classification=classification,
+                    evidence=evidence,
+                    diff_snippet=diff_snippet,
+                    entropy=entropy,
+                )
+                response_data = json.dumps({"response": explanation}).encode("utf-8")
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Content-Length", str(len(response_data)))
+                self.end_headers()
+                self.wfile.write(response_data)
+                return
+            except Exception as e:
+                import json
+                err_data = json.dumps({"error": str(e)}).encode("utf-8")
+                self.send_response(500)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Content-Length", str(len(err_data)))
+                self.end_headers()
+                self.wfile.write(err_data)
+                return
+
+        self.send_error(404, "Endpoint not found")
+
 
 def serve(port: int = 8080, open_browser: bool = True) -> None:
     socketserver.TCPServer.allow_reuse_address = True

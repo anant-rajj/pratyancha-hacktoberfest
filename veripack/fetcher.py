@@ -91,13 +91,17 @@ def _safe_extract_tar(archive_path: Path, dest_dir: Path) -> None:
 
             # Resolve target and verify no directory traversal
             target_path = (dest_dir / member.name).resolve()
-            if not str(target_path).startswith(dest_dir_str):
+            try:
+                target_path.relative_to(dest_dir.resolve())
+            except ValueError:
                 raise SecurityError(f"Tar-Slip directory traversal attempt blocked: {member.name}")
 
             # Check symlink destination
             if member.issym() or member.islnk():
                 link_target = (target_path.parent / member.linkname).resolve()
-                if not str(link_target).startswith(dest_dir_str):
+                try:
+                    link_target.relative_to(dest_dir.resolve())
+                except ValueError:
                     raise SecurityError(f"Malicious symlink escape blocked: {member.name} -> {member.linkname}")
 
         if hasattr(tarfile, 'data_filter'):
@@ -119,7 +123,9 @@ def _safe_extract_zip(archive_path: Path, dest_dir: Path) -> None:
                 raise ValueError(f"Archive member exceeds 25 MB limit: {info.filename} ({info.file_size} bytes)")
 
             target_path = (dest_dir / info.filename).resolve()
-            if not str(target_path).startswith(dest_dir_str):
+            try:
+                target_path.relative_to(dest_dir.resolve())
+            except ValueError:
                 raise SecurityError(f"Zip-Slip directory traversal attempt blocked: {info.filename}")
 
         zf.extractall(path=dest_dir)
@@ -298,14 +304,19 @@ def fetch_pypi_package(pkg_spec: str, work_dir: Path) -> PackageMetadata:
 
 def fetch_upstream_source(
     repo_url_or_path: str,
-    version: str,
-    git_head: Optional[str],
-    work_dir: Path,
+    version: str = "",
+    git_head: Optional[str] = None,
+    work_dir: Optional[Path] = None,
 ) -> SourceMetadata:
     """
     Fetches upstream source tree from local directory, local archive, or GitHub URL.
     Critical for offline automated hackathon grading.
     """
+    if work_dir is None:
+        import tempfile
+        work_dir = Path(tempfile.mkdtemp(prefix="veripack_upstream_"))
+    else:
+        work_dir = Path(work_dir)
     work_dir.mkdir(parents=True, exist_ok=True)
     local_candidate = Path(repo_url_or_path).resolve()
 
