@@ -99,4 +99,12 @@ def detect_obfuscation_signals(text: str, file_ext: str = "") -> List[str]:
             matched_str = match.group(0).strip()
             signals.append(f"dynamic_execution: {matched_str}")
 
+    # 6. Trojan Source Unicode Bidi override checks (CVE-2021-42574)
+    if re.search(r"[\u202A-\u202E\u2066-\u2069]", text):
+        signals.append("trojan_source_bidi_override: CVE-2021-42574 direction override detected")
+
+    # 7. Invisible zero-width character injection
+    if len(re.findall(r"[\u200B-\u200D\uFEFF]", text)) > 3:
+        signals.append("invisible_unicode_injection: multiple zero-width characters detected")
+
     return signals

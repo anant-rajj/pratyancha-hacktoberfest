@@ -90,6 +90,20 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers = parser.add_subparsers(dest="subcommand")
     subparsers.add_parser("analyze", parents=[common], help="Analyze package against source repository")
 
+    # Monitor subcommand
+    monitor_parser = subparsers.add_parser("monitor", help="Continuously or periodically monitor package releases")
+    monitor_parser.add_argument("--npm", default=None, help="npm package spec to monitor (e.g. debug)")
+    monitor_parser.add_argument("--pypi", default=None, help="PyPI package spec to monitor")
+    monitor_parser.add_argument("--repo", default=None, help="Explicit upstream Git repository URL or path")
+    monitor_parser.add_argument("--interval", type=int, default=300, help="Polling interval in seconds (default: 300)")
+    monitor_parser.add_argument("--once", action="store_true", help="Check latest release once and exit")
+    monitor_parser.add_argument("--json", action="store_true", help="Output machine-readable JSON report")
+
+    # Web subcommand
+    web_parser = subparsers.add_parser("web", help="Start the VeriPack web UI server")
+    web_parser.add_argument("--port", type=int, default=8080, help="Port to bind server (default: 8080)")
+    web_parser.add_argument("--no-browser", action="store_true", help="Do not automatically launch browser")
+
     return parser
 
 
@@ -112,6 +126,41 @@ def main() -> int:
         else:
             print_colored_report(report)
         return 0
+
+    if args.subcommand == "web":
+        from veripack.web import serve
+        serve(port=args.port, open_browser=not args.no_browser)
+        return 0
+
+    if args.subcommand == "monitor":
+        from veripack.monitor import check_release_once, monitor_package
+        if not args.npm and not args.pypi:
+            print("[-] Error: Specify either --npm or --pypi package name to monitor.", file=sys.stderr)
+            return 1
+        if args.once:
+            report = check_release_once(
+                npm_spec=args.npm,
+                pypi_spec=args.pypi,
+                explicit_repo_url=args.repo,
+            )
+            if not report:
+                print("[-] Error: Failed to check release.", file=sys.stderr)
+                return 1
+            rep_dict = report.to_dict()
+            if args.json:
+                print(json.dumps(rep_dict, indent=2))
+            else:
+                print_colored_report(rep_dict)
+            return 0 if report.verdict == Verdict.SAFE else 2
+        else:
+            monitor_package(
+                npm_spec=args.npm,
+                pypi_spec=args.pypi,
+                explicit_repo_url=args.repo,
+                poll_interval_seconds=args.interval,
+                run_once=False,
+            )
+            return 0
 
     # Ensure required arguments are provided
     if not (args.package or args.npm or args.pypi):

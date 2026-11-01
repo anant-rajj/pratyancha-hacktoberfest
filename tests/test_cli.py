@@ -60,3 +60,15 @@ def test_cli_self_test_flag():
     assert proc.returncode == 0
     data = json.loads(proc.stdout)
     assert data.get("status") == "ok"
+
+
+def test_cli_monitor_subcommand_help():
+    proc = _run_cli("monitor", "--help")
+    assert proc.returncode == 0
+    assert "monitor" in proc.stdout
+
+
+def test_cli_web_subcommand_help():
+    proc = _run_cli("web", "--help")
+    assert proc.returncode == 0
+    assert "web" in proc.stdout
