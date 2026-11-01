@@ -2892,14 +2892,20 @@ function verifyTargetSync(target) {
     return REPOS.pratyancha;
   }
   const cleanTarget = target.trim();
+  const lowTarget = cleanTarget.toLowerCase();
 
-  // Match directly with REPOS presets
-  if (REPOS[currentKey] && (cleanTarget === REPOS[currentKey].target || cleanTarget.toLowerCase() === currentKey)) {
+  // Match directly with selected preset chip
+  if (REPOS[currentKey] && (cleanTarget === REPOS[currentKey].target || lowTarget === currentKey)) {
     return REPOS[currentKey];
   }
+
+  // Match exact preset targets or keys
   for (const k of Object.keys(REPOS)) {
-    if (REPOS[k].target.toLowerCase() === cleanTarget.toLowerCase() || cleanTarget.toLowerCase().includes(k)) {
+    if (REPOS[k].target.toLowerCase() === lowTarget || lowTarget === k) {
       currentKey = k;
+      document.querySelectorAll(".arch-btn").forEach(b => b.classList.remove("active"));
+      const activeBtn = document.getElementById(`chip-${k}`);
+      if (activeBtn) activeBtn.classList.add("active");
       return REPOS[k];
     }
   }
@@ -2919,18 +2925,16 @@ function selectSample(key) {
   if (activeBtn) activeBtn.classList.add("active");
 
   const data = REPOS[key];
-  if (data) {
-    activeData = data;
-    const input = document.getElementById("target-input");
-    if (input) input.value = data.target;
-  } else {
-    const input = document.getElementById("target-input");
-    if (input) input.value = key;
+  const input = document.getElementById("target-input");
+  if (data && input) {
+    input.value = data.target;
+  } else if (input) {
+    input.value = key;
   }
   runCheck();
 }
 
-// 6-Step Pipeline Execution (Cancels prior animations, runs cleanly in 240ms)
+// 6-Step Pipeline Execution (Cancels prior animations, runs cleanly in 210ms)
 function runCheck() {
   if (currentStepTimer) {
     clearTimeout(currentStepTimer);
@@ -2943,11 +2947,31 @@ function runCheck() {
   const resultsArea = document.getElementById("results-area");
   
   if (progressCard) progressCard.style.display = "block";
-  if (resultsArea) resultsArea.style.opacity = "0.3";
+  if (resultsArea) resultsArea.style.opacity = "0.85";
 
   // Resolve target synchronously
   const resolvedData = verifyTargetSync(target);
   activeData = resolvedData;
+
+  // Render IMMEDIATELY (0ms delay) so score, files, checklist update instantly!
+  renderResults(resolvedData);
+
+  // If connected to local live Python backend, refresh with backend audit
+  if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+    fetch("/api/verify", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ target: target })
+    })
+    .then(r => r.ok ? r.json() : null)
+    .then(backendData => {
+      if (backendData && backendData.files && backendData.files.length) {
+        activeData = backendData;
+        renderResults(backendData);
+      }
+    })
+    .catch(() => {});
+  }
 
   // Reset steps
   const steps = [1, 2, 3, 4, 5, 6];
@@ -2973,7 +2997,7 @@ function runCheck() {
           if (statusEl) statusEl.innerHTML = "✓";
           currentStep++;
           advance();
-        }, 40);
+        }, 35);
       } else {
         currentStep++;
         advance();
@@ -2982,7 +3006,6 @@ function runCheck() {
       currentStepTimer = null;
       if (progressCard) progressCard.style.display = "none";
       if (resultsArea) resultsArea.style.opacity = "1";
-      renderResults(resolvedData);
     }
   }
   advance();
