@@ -1203,13 +1203,13 @@ function typewriterOutput(text) {
   }
 
   let i = 0;
-  const step = text.length > 800 ? 6 : (text.length > 400 ? 4 : 2);
+  const step = Math.max(16, Math.floor(text.length / 40));
 
   function type() {
     if (i < text.length) {
       i = Math.min(i + step, text.length);
       textSpan.textContent = text.substring(0, i);
-      typewriterTimer = setTimeout(type, 10);
+      typewriterTimer = setTimeout(type, 16);
     } else {
       typewriterTimer = null;
       textSpan.textContent = text;
