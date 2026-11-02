@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Convenience launcher for the VeriPack web dashboard."""
+import os
 import sys
 import http.server
 import socketserver
@@ -12,14 +13,20 @@ repo_dir = cur_dir.parent if (cur_dir.parent / "veripack").exists() else cur_dir
 if repo_dir.exists():
     sys.path.insert(0, str(repo_dir))
 
+def get_port() -> int:
+    env_port = os.getenv("PORT")
+    if env_port:
+        return int(env_port)
+    return int(sys.argv[1]) if len(sys.argv) > 1 else 8080
+
 try:
     from veripack.web import serve
     if __name__ == "__main__":
-        port = int(sys.argv[1]) if len(sys.argv) > 1 else 8080
-        serve(port=port)
+        port = get_port()
+        serve(port=port, open_browser=False if os.getenv("PORT") else True)
 except Exception:
     # Standalone mode
-    port = int(sys.argv[1]) if len(sys.argv) > 1 else 8080
+    port = get_port()
     socketserver.TCPServer.allow_reuse_address = True
     class StandaloneHandler(http.server.SimpleHTTPRequestHandler):
         def __init__(self, *args, **kwargs):
@@ -30,9 +37,10 @@ except Exception:
     print(f"[*] VeriPack Web Dashboard running at: {url}")
     print(f"[*] Serving files from: {cur_dir}")
     print("=" * 70)
-    try:
-        webbrowser.open(url)
-    except Exception:
-        pass
+    if not os.getenv("PORT"):
+        try:
+            webbrowser.open(url)
+        except Exception:
+            pass
     with socketserver.TCPServer(("", port), StandaloneHandler) as httpd:
         httpd.serve_forever()
