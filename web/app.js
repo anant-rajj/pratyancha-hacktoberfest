@@ -588,6 +588,7 @@ const REPOS = {
 var currentKey = "pratyancha";
 var activeData = null;
 var currentStepTimer = null;
+var typewriterTimer = null;
 const THEMES = ["green", "amber", "cyan"];
 const BRIGHT_MODES = ["normal", "high", "dim"];
 
@@ -1184,23 +1185,34 @@ function renderResults(customData) {
   typewriterOutput(data.ai_response);
 }
 
-// Typewriter Animation
+// Typewriter Animation (Smooth, zero-character drop, non-overlapping)
 function typewriterOutput(text) {
   const el = document.getElementById("live-ai-response");
   if (!el || !text) return;
+
+  if (typewriterTimer) {
+    clearTimeout(typewriterTimer);
+    typewriterTimer = null;
+  }
+
   el.innerHTML = '<span class="tw-text"></span><span class="typewriter-cursor"></span>';
   const textSpan = el.querySelector(".tw-text");
   if (!textSpan) {
     el.textContent = text;
     return;
   }
+
   let i = 0;
+  const step = text.length > 800 ? 6 : (text.length > 400 ? 4 : 2);
+
   function type() {
     if (i < text.length) {
-      textSpan.textContent += text.charAt(i);
-      i += (text.length > 500 ? 3 : 1);
-      setTimeout(type, 8);
+      i = Math.min(i + step, text.length);
+      textSpan.textContent = text.substring(0, i);
+      typewriterTimer = setTimeout(type, 10);
     } else {
+      typewriterTimer = null;
+      textSpan.textContent = text;
       const cursor = el.querySelector(".typewriter-cursor");
       if (cursor) cursor.style.display = "none";
     }
