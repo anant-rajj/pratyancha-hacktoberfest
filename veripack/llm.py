@@ -1,9 +1,10 @@
 """
-Module 4: Local Open-Weight AI Engine (veripack/llm.py)
+Module 4: Local & Cloud Open-Weight AI Engine (veripack/llm.py)
 
-Interfaces with local Ollama daemon (qwen2.5-coder:7b) to provide plain-English
-security explanations for detected code hunks and manifest discrepancies.
-Enforces a strict 3.0s timeout and automatic deterministic fallback when Ollama is offline.
+Interfaces with local Ollama daemon (qwen2.5-coder:7b) or optional cloud API
+(e.g., OpenRouter free Qwen 2.5 Coder) to provide plain-English security explanations.
+Loads credentials securely from .env (automatically ignored by git).
+Enforces a strict 3.0s timeout and automatic deterministic fallback when offline.
 """
 
 from __future__ import annotations
@@ -11,9 +12,17 @@ import os
 import requests
 from typing import Optional, List
 
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except Exception:
+    pass
+
 OLLAMA_ENDPOINT = os.getenv("VERIPACK_OLLAMA_URL", "http://localhost:11434/api/generate")
 DEFAULT_MODEL = os.getenv("VERIPACK_MODEL", "qwen2.5-coder:7b")
 DEFAULT_TIMEOUT = float(os.getenv("VERIPACK_LLM_TIMEOUT", "3.0"))
+CLOUD_ENDPOINT = os.getenv("VERIPACK_CLOUD_URL", "https://openrouter.ai/api/v1/chat/completions")
+CLOUD_MODEL = os.getenv("VERIPACK_CLOUD_MODEL", "qwen/qwen-2.5-coder-32b-instruct:free")
 
 
 def query_qwen_explainer(
@@ -25,10 +34,11 @@ def query_qwen_explainer(
     custom_prompt: Optional[str] = None,
 ) -> str:
     """
-    Asks local Qwen 2.5 Coder 7B to analyze the discrepancy and explain why it exists
-    (whether it is a legitimate compiler transform or a malicious supply-chain backdoor).
-
-    Falls back immediately to high-precision deterministic rules if Ollama is unreachable.
+    Asks Qwen 2.5 Coder to analyze the discrepancy and explain why it exists.
+    Checks:
+      1. Cloud API key (QWEN_API_KEY or OPENROUTER_API_KEY in .env) if configured.
+      2. Local free Ollama daemon (qwen2.5-coder:7b) on http://localhost:11434.
+      3. Deterministic air-gap rule engine if both are offline.
     """
     # 1. First generate the deterministic baseline explanation
     deterministic_explanation = generate_deterministic_explanation(
@@ -57,9 +67,41 @@ def query_qwen_explainer(
             f"Explain in 2-3 concise sentences whether this discrepancy is a benign build artifact or a security threat, citing specific evidence."
         )
 
+    timeout = float(os.getenv("VERIPACK_LLM_TIMEOUT", str(DEFAULT_TIMEOUT)))
+
+    # A. Check Cloud API Key (OpenRouter / DashScope) if provided via .env
+    api_key = os.getenv("QWEN_API_KEY") or os.getenv("OPENROUTER_API_KEY")
+    if api_key:
+        try:
+            cloud_resp = requests.post(
+                CLOUD_ENDPOINT,
+                headers={
+                    "Authorization": f"Bearer {api_key}",
+                    "Content-Type": "application/json",
+                    "HTTP-Referer": "https://github.com/anant-rajj/pratyancha-hacktoberfest",
+                    "X-Title": "VeriPack",
+                },
+                json={
+                    "model": CLOUD_MODEL,
+                    "messages": [{"role": "user", "content": prompt}],
+                    "temperature": 0.1,
+                    "max_tokens": 150,
+                },
+                timeout=timeout,
+            )
+            if cloud_resp.status_code == 200:
+                cdata = cloud_resp.json()
+                choices = cdata.get("choices", [])
+                if choices:
+                    text = choices[0].get("message", {}).get("content", "").strip()
+                    if text:
+                        return f"[Qwen 2.5 Coder (Cloud)]: {text}"
+        except Exception:
+            pass
+
+    # B. Local Free Ollama (0 API keys, 0 cost, runs on http://localhost:11434)
     endpoint = os.getenv("VERIPACK_OLLAMA_URL", OLLAMA_ENDPOINT)
     model = os.getenv("VERIPACK_MODEL", DEFAULT_MODEL)
-    timeout = float(os.getenv("VERIPACK_LLM_TIMEOUT", str(DEFAULT_TIMEOUT)))
 
     payload = {
         "model": model,
@@ -79,9 +121,9 @@ def query_qwen_explainer(
             if explanation:
                 return f"[Qwen 2.5 Coder]: {explanation}"
     except (requests.RequestException, Exception):
-        # Offline fallback: CI or grading runner with no local Ollama
         pass
 
+    # C. Air-Gapped Deterministic Fallback
     return deterministic_explanation
 
 
